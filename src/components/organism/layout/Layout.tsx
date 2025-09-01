@@ -14,17 +14,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <ul className={styles.nav_ul}>
               <li>
                 <Link to={"/"} className={styles.nav_link}>
-                  Home
+                  Dashboard
                 </Link>
               </li>
               <li>
-                <Link to={"/contact"} className={styles.nav_link}>
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link to={"/about"} className={styles.nav_link}>
-                  About
+                <Link to={"/menu"} className={styles.nav_link}>
+                  Menu
                 </Link>
               </li>
             </ul>
