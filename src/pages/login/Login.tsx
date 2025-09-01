@@ -1,11 +1,17 @@
 import { Button, Checkbox, Flex, Form, Input } from "antd";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "src/store";
+import { login } from "src/store/features/authSlice";
 
 const Login: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const onFinish = (values: unknown) => {
     console.log("Received values of form: ", values);
+    dispatch(login());
+    navigate("/", { replace: true });
   };
 
   return (

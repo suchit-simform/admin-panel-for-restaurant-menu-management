@@ -28,8 +28,8 @@ const PrivateRoutes = () => {
   //temp variable => change below variable to see login and sign up page
   // const authenticated = false;
 
-  return !authenticated ? (
-    <Layout>
+  return authenticated ? (
+    <Layout isGuest={false}>
       <Outlet />
     </Layout>
   ) : (

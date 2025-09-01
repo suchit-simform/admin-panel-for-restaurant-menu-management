@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
+import Layout from "src/components/organism/layout/Layout";
 import { SuspenseErrorBoundary } from "./SuspenseErrorBoundary";
 
 //lazy imports
@@ -9,6 +10,7 @@ const LayoutAuth = lazy(() => import("../components/organism/layoutAuth/LayoutAu
 const Login = lazy(() => import("../pages/login/Login"));
 const Register = lazy(() => import("../pages/register/Register"));
 const ForgotPassword = lazy(() => import("../pages/forgot-password/ForgotPassword"));
+const Agreement = lazy(() => import("../pages/agreement/Agreement"));
 const PrivateRoutes = lazy(() => import("./PrivateRouter"));
 
 const router = createBrowserRouter(
@@ -39,6 +41,16 @@ const router = createBrowserRouter(
           }
         />
       </Route>
+      <Route
+        path="agreement"
+        element={
+          <SuspenseErrorBoundary>
+            <Layout isGuest={true}>
+              <Agreement />
+            </Layout>
+          </SuspenseErrorBoundary>
+        }
+      />
       <Route
         path="auth/*"
         element={

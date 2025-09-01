@@ -1,14 +1,20 @@
 import { Button, Checkbox, Flex, Form, Input, Select } from "antd";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "src/store";
+import { login } from "src/store/features/authSlice";
 
 const { Option } = Select;
 
 const Register: React.FC = () => {
   const [form] = Form.useForm();
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onFinish = (values: unknown) => {
     console.log("Received values of form: ", values);
+    dispatch(login());
+    navigate("/", { replace: true });
   };
 
   return (
@@ -103,7 +109,7 @@ const Register: React.FC = () => {
           ]}
         >
           <Checkbox>
-            I have read the <Link to="">agreement</Link>
+            I have read the <Link to="/agreement">agreement</Link>
           </Checkbox>
         </Form.Item>
         <Form.Item>

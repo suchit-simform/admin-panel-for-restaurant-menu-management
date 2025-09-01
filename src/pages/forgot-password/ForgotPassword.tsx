@@ -27,7 +27,6 @@ const ForgotPassword: React.FC = () => {
         onFinish={onFinish}
         scrollToFirstError
         variant="outlined"
-        initialValues={{ prefix: "91", role: "user" }}
       >
         <Form.Item
           name="password"
