@@ -1,17 +1,47 @@
-import { Button, Checkbox, Flex, Form, Input } from "antd";
+import { Button, Checkbox, Flex, Form, Input, Select, type FormProps } from "antd";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { generateAuthToken } from "src/lib/utils";
 import { useAppDispatch } from "src/store";
-import { login } from "src/store/features/authSlice";
+import { handleLogin } from "src/store/features/authSlice";
+import type { Role } from "src/types/common";
+import { v4 as uuid } from "uuid";
+
+const { Option } = Select;
+
+type FieldType = {
+  email: string;
+  password: string;
+  role: Role;
+};
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const onFinish = (values: unknown) => {
-    console.log("Received values of form: ", values);
-    dispatch(login());
-    navigate("/", { replace: true });
+  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+    try {
+      const authToken = generateAuthToken();
+      dispatch(
+        handleLogin({
+          authToken,
+          currentUser: {
+            email: values.email,
+            role: values.role,
+            id: uuid(),
+          },
+        }),
+      );
+      navigate("/", { replace: true });
+    } catch (err) {
+      console.error(err);
+      dispatch(
+        handleLogin({
+          authToken: null,
+          currentUser: null,
+        }),
+      );
+    }
   };
 
   return (
@@ -66,6 +96,12 @@ const Login: React.FC = () => {
           hasFeedback
         >
           <Input.Password />
+        </Form.Item>
+        <Form.Item name="role" label="Role" rules={[{ message: "Please select role!" }]}>
+          <Select placeholder="select your role">
+            <Option value="admin">Admin</Option>
+            <Option value="user">User</Option>
+          </Select>
         </Form.Item>
         <Form.Item>
           <Flex justify="space-between" align="center">

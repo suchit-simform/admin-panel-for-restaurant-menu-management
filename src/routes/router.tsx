@@ -2,6 +2,7 @@ import { lazy } from "react";
 import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
 import Layout from "src/components/organism/layout/Layout";
 import { SuspenseErrorBoundary } from "./SuspenseErrorBoundary";
+import ProtectedRoutes from "./ProtectedRoutes";
 
 //lazy imports
 const Dashboard = lazy(() => import("../pages/index"));
@@ -36,7 +37,9 @@ const router = createBrowserRouter(
           path="/menu"
           element={
             <SuspenseErrorBoundary>
-              <Menu />
+              <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                <Menu />
+              </ProtectedRoutes>
             </SuspenseErrorBoundary>
           }
         />
@@ -45,7 +48,7 @@ const router = createBrowserRouter(
         path="agreement"
         element={
           <SuspenseErrorBoundary>
-            <Layout isGuest={true}>
+            <Layout isViewOnly={true}>
               <Agreement />
             </Layout>
           </SuspenseErrorBoundary>
