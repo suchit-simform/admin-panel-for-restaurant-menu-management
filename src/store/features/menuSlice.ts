@@ -11,11 +11,11 @@ export interface MenuItem {
 }
 
 export interface MenuState {
-  menuItems: MenuItem[];
+  items: MenuItem[];
 }
 
 const initialState: MenuState = {
-  menuItems: [],
+  items: [],
 };
 
 export const menuSlice = createSlice({
@@ -23,15 +23,15 @@ export const menuSlice = createSlice({
   initialState,
   reducers: {
     addMenuItem: (state, action: PayloadAction<MenuItem>) => {
-      state.menuItems.push(action.payload);
+      state.items.push(action.payload);
     },
     removeMenuItem: (state, action: PayloadAction<string>) => {
-      state.menuItems = state.menuItems.filter((item) => item.id !== action.payload);
+      state.items = state.items.filter((item) => item.id !== action.payload);
     },
     updateMenuItem: (state, action: PayloadAction<MenuItem>) => {
-      const index = state.menuItems.findIndex((item) => item.id === action.payload.id);
+      const index = state.items.findIndex((item) => item.id === action.payload.id);
       if (index !== -1) {
-        state.menuItems[index] = action.payload;
+        state.items[index] = action.payload;
       }
     },
   },

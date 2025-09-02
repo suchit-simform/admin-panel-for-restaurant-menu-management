@@ -23,10 +23,10 @@ export const categorySlice = createSlice({
     removeCategory: (state, action: PayloadAction<string>) => {
       state.categories = state.categories.filter((category) => category.id !== action.payload);
     },
-    updateCategory: (state, action: PayloadAction<{ categoryId: string; newCategory: CategoryItem }>) => {
-      const index = state.categories.findIndex((category) => category.id === action.payload.categoryId);
+    updateCategory: (state, action: PayloadAction<CategoryItem>) => {
+      const index = state.categories.findIndex((category) => category.id === action.payload.id);
       if (index !== -1) {
-        state.categories[index] = action.payload.newCategory;
+        state.categories[index] = action.payload;
       }
     },
   },
