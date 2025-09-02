@@ -1,7 +1,10 @@
-import { Outlet, Navigate } from "react-router-dom";
-import Layout from "src/components/layout/Layout";
+import { Navigate, Outlet } from "react-router-dom";
+import Layout from "src/components/organism/layout/Layout";
+import { useAppSelector } from "src/store";
 
 const PrivateRoutes = () => {
+  const authenticated = useAppSelector((state) => state.auth.isAuth);
+
   /**
    * you can check if user is logged in or not
    * if you don't have user auth then hit GET request to server with token and get user logged in status
@@ -23,10 +26,10 @@ const PrivateRoutes = () => {
   */
 
   //temp variable => change below variable to see login and sign up page
-  const authenticated = true;
+  // const authenticated = false;
 
   return authenticated ? (
-    <Layout>
+    <Layout isGuest={false}>
       <Outlet />
     </Layout>
   ) : (

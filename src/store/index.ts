@@ -2,10 +2,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import counterSlice from "src/store/features/counterSlice";
 import { userApi } from "src/store/api/userApi";
 import { type TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import authSlice from "./features/authSlice";
 
 export const store = configureStore({
   reducer: {
     counter: counterSlice,
+    auth: authSlice,
     [userApi.reducerPath]: userApi.reducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(userApi.middleware),

@@ -1,14 +1,16 @@
 import { lazy } from "react";
 import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
+import Layout from "src/components/organism/layout/Layout";
 import { SuspenseErrorBoundary } from "./SuspenseErrorBoundary";
 
 //lazy imports
-const Home = lazy(() => import("../components/home/Home"));
-const About = lazy(() => import("../components/about/About"));
-const Contact = lazy(() => import("../components/contact/Contact"));
-const LayoutAuth = lazy(() => import("../components/layoutAuth/LayoutAuth"));
-const Login = lazy(() => import("../components/login/Login"));
-const Register = lazy(() => import("../components/register/Register"));
+const Dashboard = lazy(() => import("../pages/index"));
+const Menu = lazy(() => import("../pages/menu/Menu"));
+const LayoutAuth = lazy(() => import("../components/organism/layoutAuth/LayoutAuth"));
+const Login = lazy(() => import("../pages/login/Login"));
+const Register = lazy(() => import("../pages/register/Register"));
+const ForgotPassword = lazy(() => import("../pages/forgot-password/ForgotPassword"));
+const Agreement = lazy(() => import("../pages/agreement/Agreement"));
 const PrivateRoutes = lazy(() => import("./PrivateRouter"));
 
 const router = createBrowserRouter(
@@ -26,27 +28,29 @@ const router = createBrowserRouter(
           index
           element={
             <SuspenseErrorBoundary>
-              <Home />
+              <Dashboard />
             </SuspenseErrorBoundary>
           }
         />
         <Route
-          path="/contact"
+          path="/menu"
           element={
             <SuspenseErrorBoundary>
-              <Contact />
-            </SuspenseErrorBoundary>
-          }
-        />
-        <Route
-          path="/about"
-          element={
-            <SuspenseErrorBoundary>
-              <About />
+              <Menu />
             </SuspenseErrorBoundary>
           }
         />
       </Route>
+      <Route
+        path="agreement"
+        element={
+          <SuspenseErrorBoundary>
+            <Layout isGuest={true}>
+              <Agreement />
+            </Layout>
+          </SuspenseErrorBoundary>
+        }
+      />
       <Route
         path="auth/*"
         element={
@@ -57,7 +61,7 @@ const router = createBrowserRouter(
       >
         <Route
           index
-          path="signup"
+          path="register"
           element={
             <SuspenseErrorBoundary>
               <Register />
@@ -65,10 +69,18 @@ const router = createBrowserRouter(
           }
         />
         <Route
-          path="signin"
+          path="login"
           element={
             <SuspenseErrorBoundary>
               <Login />
+            </SuspenseErrorBoundary>
+          }
+        />
+        <Route
+          path="forgot-password"
+          element={
+            <SuspenseErrorBoundary>
+              <ForgotPassword />
             </SuspenseErrorBoundary>
           }
         />
