@@ -10,10 +10,17 @@
   list-style-type: none;
   display: flex;
   justify-content: space-around;
+  align-items: center;
   width: 20rem;
 }
 
 .nav_link {
   text-decoration: none;
   color: white;
+}
+
+
+.content {
+  padding: 2rem;
+  padding-bottom: 0;
 }
