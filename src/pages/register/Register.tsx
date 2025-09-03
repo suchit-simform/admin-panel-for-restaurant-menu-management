@@ -6,6 +6,7 @@ import { useAppDispatch } from "src/store";
 import { handleLogin } from "src/store/features/authSlice";
 import type { Role } from "src/types/common";
 import { v4 as uuid } from "uuid";
+import { handleLogout } from "../../store/features/authSlice";
 
 const { Option } = Select;
 
@@ -39,12 +40,7 @@ const Register: React.FC = () => {
       navigate("/", { replace: true });
     } catch (err) {
       console.error(err);
-      dispatch(
-        handleLogin({
-          authToken: null,
-          currentUser: null,
-        }),
-      );
+      dispatch(handleLogout());
     }
   };
 
