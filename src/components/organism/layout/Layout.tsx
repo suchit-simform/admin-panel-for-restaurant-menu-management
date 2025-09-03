@@ -53,7 +53,7 @@ const Layout: React.FC<Props> = ({ children, isViewOnly = true }) => {
           </div>
         )}
       </nav>
-      {children}
+      <div className={styles.content}>{children}</div>
     </main>
   );
 };
