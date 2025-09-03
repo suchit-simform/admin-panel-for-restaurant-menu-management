@@ -1,8 +1,10 @@
 import { lazy } from "react";
-import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, Outlet, Route } from "react-router-dom";
 import Layout from "src/components/organism/layout/Layout";
 import { SuspenseErrorBoundary } from "./SuspenseErrorBoundary";
 import ProtectedRoutes from "./ProtectedRoutes";
+import MenuAdd from "src/pages/menu/MenuAdd";
+import MenuEdit from "src/pages/menu/MenuEdit";
 
 //lazy imports
 const Dashboard = lazy(() => import("../pages/index"));
@@ -33,16 +35,38 @@ const router = createBrowserRouter(
             </SuspenseErrorBoundary>
           }
         />
-        <Route
-          path="/menu"
-          element={
-            <SuspenseErrorBoundary>
-              <ProtectedRoutes allowedRoles={["admin", "user"]}>
-                <Menu />
-              </ProtectedRoutes>
-            </SuspenseErrorBoundary>
-          }
-        />
+        <Route path="/menu*" element={<Outlet />}>
+          <Route
+            index
+            element={
+              <SuspenseErrorBoundary>
+                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                  <Menu />
+                </ProtectedRoutes>
+              </SuspenseErrorBoundary>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <SuspenseErrorBoundary>
+                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                  <MenuAdd />
+                </ProtectedRoutes>
+              </SuspenseErrorBoundary>
+            }
+          />
+          <Route
+            path=":menuId/edit"
+            element={
+              <SuspenseErrorBoundary>
+                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                  <MenuEdit />
+                </ProtectedRoutes>
+              </SuspenseErrorBoundary>
+            }
+          />
+        </Route>
       </Route>
       <Route
         path="agreement"
