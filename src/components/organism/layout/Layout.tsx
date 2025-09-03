@@ -1,14 +1,17 @@
+import { Avatar, Flex } from "antd";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./Layout.module.css";
 import ButtonAtom from "src/components/atoms/button";
+import { getUserName } from "src/lib/utils";
+import { useAppDispatch, useAppSelector } from "src/store";
 import { handleLogout } from "src/store/features/authSlice";
-import { useAppDispatch } from "src/store";
+import styles from "./Layout.module.css";
 
 type Props = { children: React.ReactNode; isViewOnly: boolean };
 const Layout: React.FC<Props> = ({ children, isViewOnly = true }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const currentUser = useAppSelector((state) => state.auth.currentUser);
 
   const logoutHandler = React.useCallback(() => {
     dispatch(handleLogout());
@@ -36,16 +39,21 @@ const Layout: React.FC<Props> = ({ children, isViewOnly = true }) => {
                   </Link>
                 </li>
                 <li>
-                  <ButtonAtom variant="link" onClick={logoutHandler}>
-                    Logout
-                  </ButtonAtom>
+                  <Flex gap={16} align="center">
+                    <Avatar style={{ verticalAlign: "middle" }} size="large" gap={4}>
+                      {getUserName(currentUser)}
+                    </Avatar>
+                    <ButtonAtom variant="link" onClick={logoutHandler}>
+                      Logout
+                    </ButtonAtom>
+                  </Flex>
                 </li>
               </ul>
             </div>
           </div>
         )}
       </nav>
-      {children}
+      <div className={styles.content}>{children}</div>
     </main>
   );
 };
