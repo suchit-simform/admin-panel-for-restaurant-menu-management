@@ -1,9 +1,13 @@
+import { useMemo } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import Layout from "src/components/organism/layout/Layout";
 import { useAppSelector } from "src/store";
 
 const PrivateRoutes = () => {
-  const authenticated = useAppSelector((state) => state.auth.isAuth);
+  const authToken = useAppSelector((state) => state.auth.authToken);
+  const currentUser = useAppSelector((state) => state.auth.currentUser);
+
+  const isAuthenticated = useMemo(() => Boolean(authToken) && Boolean(currentUser), [authToken, currentUser]);
 
   /**
    * you can check if user is logged in or not
@@ -28,8 +32,8 @@ const PrivateRoutes = () => {
   //temp variable => change below variable to see login and sign up page
   // const authenticated = false;
 
-  return authenticated ? (
-    <Layout isGuest={false}>
+  return isAuthenticated ? (
+    <Layout isViewOnly={false}>
       <Outlet />
     </Layout>
   ) : (

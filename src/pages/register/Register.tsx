@@ -1,20 +1,47 @@
-import { Button, Checkbox, Flex, Form, Input, Select } from "antd";
+import { Button, Checkbox, Flex, Form, Input, Select, type FormProps } from "antd";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { generateAuthToken } from "src/lib/utils";
 import { useAppDispatch } from "src/store";
-import { login } from "src/store/features/authSlice";
+import { handleLogin } from "src/store/features/authSlice";
+import type { Role } from "src/types/common";
+import { v4 as uuid } from "uuid";
+import { handleLogout } from "../../store/features/authSlice";
 
 const { Option } = Select;
+
+type FieldType = {
+  email: string;
+  name: string;
+  password: string;
+  confirm: string;
+  role: Role;
+  agreement: boolean;
+};
 
 const Register: React.FC = () => {
   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const onFinish = (values: unknown) => {
-    console.log("Received values of form: ", values);
-    dispatch(login());
-    navigate("/", { replace: true });
+  const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
+    try {
+      const authToken = generateAuthToken();
+      dispatch(
+        handleLogin({
+          authToken,
+          currentUser: {
+            email: values.email,
+            role: values.role,
+            id: uuid(),
+          },
+        }),
+      );
+      navigate("/", { replace: true });
+    } catch (err) {
+      console.error(err);
+      dispatch(handleLogout());
+    }
   };
 
   return (
@@ -58,6 +85,14 @@ const Register: React.FC = () => {
           <Input />
         </Form.Item>
         <Form.Item
+          name="name"
+          label="Name"
+          tooltip="What do you want others to call you?"
+          rules={[{ required: true, message: "Please input your name!", whitespace: true }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
           name="password"
           label="Password"
           rules={[
@@ -92,7 +127,7 @@ const Register: React.FC = () => {
         >
           <Input.Password />
         </Form.Item>
-        <Form.Item name="role" label="Role" rules={[{ required: true, message: "Please select role!" }]}>
+        <Form.Item name="role" label="Role" rules={[{ message: "Please select role!" }]}>
           <Select placeholder="select your role">
             <Option value="admin">Admin</Option>
             <Option value="user">User</Option>
