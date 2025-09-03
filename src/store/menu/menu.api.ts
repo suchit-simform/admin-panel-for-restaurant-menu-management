@@ -5,6 +5,7 @@ import { convertErrorIntoFetchBaseQueryError } from "../helper/error";
 import { LOCAL_STORAGE_MENU_KEY } from "./menu.constant";
 import { getStoredMenuItems } from "./menu.helper";
 import type { Menu } from "./menu.type";
+import type { BaseQueryFn, FetchArgs, BaseQueryApi, FetchBaseQueryExtraOptions } from "@reduxjs/toolkit/query";
 
 const environment = import.meta.env;
 
@@ -32,7 +33,13 @@ const baseQuery = fetchBaseQuery({
 //then add logic to generate the new access token with refresh token
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const baseQueryWithReAuth = async (args: any, api: any, extraOptions: any) => {
+const baseQueryWithReAuth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  unknown,
+  FetchBaseQueryExtraOptions,
+  BaseQueryApi
+> = async (args, api, extraOptions) => {
   const result = await baseQuery(args, api, extraOptions);
   if (result?.error?.status === 401) {
     // send refresh token to get new access token
@@ -84,6 +91,11 @@ export const menuApi = createApi({
           // Get current menu items from localStorage
           const menuItems = getStoredMenuItems();
 
+          const doseMenuItemIdFound = menuItems.find((item) => item.id === updatedMenuItem.id);
+          if (!doseMenuItemIdFound) {
+            return convertErrorIntoFetchBaseQueryError(new Error("Menu item not found"));
+          }
+
           // Update the menu item by id
           const updatedMenuItems = menuItems.map((item) => (item.id === updatedMenuItem.id ? updatedMenuItem : item));
 
@@ -103,6 +115,11 @@ export const menuApi = createApi({
         try {
           // Get current menu items from localStorage
           const menuItems = getStoredMenuItems();
+
+          const doseMenuItemIdFound = menuItems.find((item) => item.id === id);
+          if (!doseMenuItemIdFound) {
+            return convertErrorIntoFetchBaseQueryError(new Error("Menu item not found"));
+          }
 
           // Remove the menu item by id
           const updatedMenuItems = menuItems.filter((item) => item.id !== id);

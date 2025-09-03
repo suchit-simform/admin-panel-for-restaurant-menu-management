@@ -8,7 +8,7 @@ export const getStoredMenuItems = () => {
     try {
       menuItems = JSON.parse(stored);
     } catch (err) {
-      console.log(`Exception while parsing localstorage menu item data: ${err}`);
+      console.error(`Exception while parsing localstorage menu item data: ${err}`);
       menuItems = [];
     }
   }
