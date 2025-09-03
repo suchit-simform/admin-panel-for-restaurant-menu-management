@@ -18,5 +18,5 @@ export function getUserName(user: User | null | undefined) {
   // Return "Guest" if email or role is missing
   if (!user?.email || !user?.role) return "Guest";
 
-  return user.email.split("@")[0].substring(0, 2).toLocaleUpperCase() || "";
+  return user.email.substring(0, 2).toLocaleUpperCase();
 }
