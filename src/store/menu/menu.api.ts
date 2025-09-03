@@ -91,8 +91,8 @@ export const menuApi = createApi({
           // Get current menu items from localStorage
           const menuItems = getStoredMenuItems();
 
-          const doseMenuItemIdFound = menuItems.find((item) => item.id === updatedMenuItem.id);
-          if (!doseMenuItemIdFound) {
+          const doesMenuItemIdFound = menuItems.find((item) => item.id === updatedMenuItem.id);
+          if (!doesMenuItemIdFound) {
             return convertErrorIntoFetchBaseQueryError(new Error("Menu item not found"));
           }
 
@@ -116,8 +116,8 @@ export const menuApi = createApi({
           // Get current menu items from localStorage
           const menuItems = getStoredMenuItems();
 
-          const doseMenuItemIdFound = menuItems.find((item) => item.id === id);
-          if (!doseMenuItemIdFound) {
+          const doesMenuItemIdFound = menuItems.find((item) => item.id === id);
+          if (!doesMenuItemIdFound) {
             return convertErrorIntoFetchBaseQueryError(new Error("Menu item not found"));
           }
 
