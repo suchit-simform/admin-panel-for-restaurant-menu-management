@@ -2,16 +2,16 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Layout.module.css";
 import ButtonAtom from "src/components/atoms/button";
-import { logout } from "src/store/features/authSlice";
+import { handleLogout } from "src/store/features/authSlice";
 import { useAppDispatch } from "src/store";
 
-type Props = { children: React.ReactNode; isGuest: boolean };
-const Layout: React.FC<Props> = ({ children, isGuest = true }) => {
+type Props = { children: React.ReactNode; isViewOnly: boolean };
+const Layout: React.FC<Props> = ({ children, isViewOnly = true }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const logoutHandler = React.useCallback(() => {
-    dispatch(logout());
+    dispatch(handleLogout());
     navigate("/auth/login", { replace: true });
   }, [dispatch, navigate]);
 
@@ -21,7 +21,7 @@ const Layout: React.FC<Props> = ({ children, isGuest = true }) => {
         <div>
           <img src="https://ik.imagekit.io/ashishkk22/simform_logo.svg?updatedAt=1697020836220" alt="simform_logo" />
         </div>
-        {!isGuest && (
+        {!isViewOnly && (
           <div>
             <div>
               <ul className={styles.nav_ul}>

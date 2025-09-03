@@ -1,10 +1,15 @@
 import React from "react";
 import type { TableColumnsType, TableProps } from "antd";
 import TableAtom from "../atoms/table";
-import type { FormDataTableProps, FormData } from "../../interface/types";
+import type { FormData } from "../../types/common";
 import { DeleteOutlined, CopyOutlined, CheckOutlined } from "@ant-design/icons";
 import ButtonAtom from "../atoms/button";
 import useCopyToClipboard from "../../hooks/useCopyToClipboard";
+
+export interface FormDataTableProps {
+  dataSource: FormData[];
+  handleDelete: (id: string) => void;
+}
 
 const FormDataTable: React.FC<FormDataTableProps> = ({ dataSource, handleDelete }) => {
   const { copyToClipboard, isCopied } = useCopyToClipboard();

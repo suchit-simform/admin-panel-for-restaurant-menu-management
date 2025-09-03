@@ -1,11 +1,11 @@
+import { message } from "antd";
 import React, { useEffect, useReducer, useState } from "react";
+import type { FormData } from "src/types/common";
+import TabsAtom, { TabPane } from "../components/atoms/tabs";
+import FormDataTable from "../components/molecules/formDataTable";
 import FormContainer from "../components/organism/formContainer";
 import { useTheme } from "../context/themeContext";
-import TabsAtom, { TabPane } from "../components/atoms/tabs";
 import "../styles/index.css";
-import type { FormData } from "../interface/types"; // Adjust this import path as per your project structure
-import { message } from "antd";
-import FormDataTable from "../components/molecules/formDataTable";
 
 // Define action types
 type Action =
@@ -71,7 +71,7 @@ const Index: React.FC = () => {
     <div className={`indexContainer ${theme === "dark" ? "dark-theme" : "light-theme"}`}>
       <TabsAtom type="card" size="large" activeKey={activeTab} onChange={handleTabChange}>
         <TabPane tab="Form" key="form">
-          <FormContainer formData={formData} updateFormData={updateFormData} />
+          <FormContainer updateFormData={updateFormData} />
         </TabPane>
         <TabPane tab="Form Data" key="table">
           <FormDataTable dataSource={formData} handleDelete={handleDelete} />

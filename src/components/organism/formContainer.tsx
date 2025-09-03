@@ -3,7 +3,11 @@ import { Form } from "antd";
 import { v4 as uuidv4 } from "uuid";
 import FormInput from "../molecules/formInput";
 import ButtonAtom from "../atoms/button";
-import type { FormContainerProps, FormData } from "../../interface/types";
+import type { FormData } from "src/types/common";
+
+export interface FormContainerProps {
+  updateFormData: (newFormData: FormData) => void;
+}
 
 const FormContainer: React.FC<FormContainerProps> = ({ updateFormData }) => {
   const [form] = Form.useForm();
