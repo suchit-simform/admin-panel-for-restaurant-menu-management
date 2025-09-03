@@ -3,11 +3,11 @@ import type { ThemeConfig } from "antd";
 const theme: ThemeConfig = {
   token: {
     // Seed Token
-    colorPrimary: "#040b6b",
+    // colorPrimary: "#040b6b",
     borderRadius: 4,
 
     // Alias Token
-    colorBgContainer: "#f6ffed",
+    // colorBgContainer: "#f6ffed",
   },
 };
 
