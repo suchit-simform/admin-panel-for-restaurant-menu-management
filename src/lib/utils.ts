@@ -12,11 +12,14 @@ export function generateAuthToken() {
 }
 
 export function getUserName(user: User | null | undefined) {
+  const defaultUserName = "GU";
   if (!user) {
-    return "Guest";
+    return defaultUserName;
   }
 
-  if (!user?.email) return "Guest";
+  if (!user?.email) return defaultUserName;
 
-  return user.email.substring(0, 2).toLocaleUpperCase();
+  const userEmail = user.email.trim();
+
+  return userEmail.substring(0, 2).toLocaleUpperCase();
 }
