@@ -1,6 +1,7 @@
-import { createApi, fetchBaseQuery, type FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import cookies from "js-cookie";
 import { MENU_API_REDUCER_KEY, MENU_TAG_TYPE } from "../helper/constant";
+import { convertErrorIntoFetchBaseQueryError } from "../helper/error";
 import type { Menu } from "./menu.type";
 
 // Common localStorage key for menu items
@@ -11,8 +12,7 @@ const environment = import.meta.env;
 const baseQuery = fetchBaseQuery({
   baseUrl: environment.VITE_APP_BASE_URL,
   credentials: "include",
-  prepareHeaders: (headers, { getState }) => {
-    console.log(getState());
+  prepareHeaders: (headers) => {
     /**
      * if your backend have refresh and access token both
      * get the access token from the redux store with below code
@@ -76,13 +76,7 @@ export const menuApi = createApi({
           // Return updated list
           return { data: updatedMenuItems };
         } catch (error) {
-          // Cast or convert your error to FetchBaseQueryError
-          const fetchError: FetchBaseQueryError = {
-            status: "CUSTOM_ERROR", // or actual status
-            data: error, // or actual error data,
-            error: "Something went wrong",
-          };
-          return { error: fetchError };
+          return convertErrorIntoFetchBaseQueryError(error);
         }
       },
     }),
@@ -102,12 +96,7 @@ export const menuApi = createApi({
           // Return updated list
           return { data: updatedMenuItems };
         } catch (error) {
-          const fetchError: FetchBaseQueryError = {
-            status: "CUSTOM_ERROR",
-            data: error,
-            error: "Something went wrong",
-          };
-          return { error: fetchError };
+          return convertErrorIntoFetchBaseQueryError(error);
         }
       },
     }),
@@ -128,12 +117,7 @@ export const menuApi = createApi({
           // Return updated list
           return { data: updatedMenuItems };
         } catch (error) {
-          const fetchError: FetchBaseQueryError = {
-            status: "CUSTOM_ERROR",
-            data: error,
-            error: "Something went wrong",
-          };
-          return { error: fetchError };
+          return convertErrorIntoFetchBaseQueryError(error);
         }
       },
     }),
@@ -145,12 +129,7 @@ export const menuApi = createApi({
           const menuItems: Menu[] = stored ? JSON.parse(stored) : [];
           return { data: menuItems };
         } catch (error) {
-          const fetchError: FetchBaseQueryError = {
-            status: "CUSTOM_ERROR",
-            data: error,
-            error: "Something went wrong",
-          };
-          return { error: fetchError };
+          return convertErrorIntoFetchBaseQueryError(error);
         }
       },
     }),
