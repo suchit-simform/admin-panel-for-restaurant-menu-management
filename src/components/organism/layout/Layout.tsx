@@ -41,7 +41,7 @@ const Layout: React.FC<Props> = ({ children, isViewOnly = true }) => {
                 <li>
                   <Flex gap={16} align="center">
                     <Avatar style={{ verticalAlign: "middle" }} size="large" gap={4}>
-                      {getUserName(currentUser) || "Guest"}
+                      {getUserName(currentUser)}
                     </Avatar>
                     <ButtonAtom variant="link" onClick={logoutHandler}>
                       Logout
