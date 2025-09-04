@@ -3,18 +3,23 @@ import { createBrowserRouter, createRoutesFromElements, Outlet, Route } from "re
 import Layout from "src/components/organism/layout/Layout";
 import { SuspenseErrorBoundary } from "./SuspenseErrorBoundary";
 import ProtectedRoutes from "./ProtectedRoutes";
-import MenuAdd from "src/pages/menu/MenuAdd";
-import MenuEdit from "src/pages/menu/MenuEdit";
 
 //lazy imports
 const Dashboard = lazy(() => import("../pages/index"));
-const Menu = lazy(() => import("../pages/menu/Menu"));
 const LayoutAuth = lazy(() => import("../components/organism/layoutAuth/LayoutAuth"));
 const Login = lazy(() => import("../pages/login/Login"));
 const Register = lazy(() => import("../pages/register/Register"));
 const ForgotPassword = lazy(() => import("../pages/forgot-password/ForgotPassword"));
 const Agreement = lazy(() => import("../pages/agreement/Agreement"));
 const PrivateRoutes = lazy(() => import("./PrivateRouter"));
+
+const Menu = lazy(() => import("../pages/menu/Menu"));
+const MenuAdd = lazy(() => import("../pages/menu/MenuAdd"));
+const MenuEdit = lazy(() => import("../pages/menu/MenuEdit"));
+
+const Category = lazy(() => import("../pages/category/Category"));
+const CategoryAdd = lazy(() => import("../pages/category/CategoryAdd"));
+const CategoryEdit = lazy(() => import("../pages/category/CategoryEdit"));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -62,6 +67,38 @@ const router = createBrowserRouter(
               <SuspenseErrorBoundary>
                 <ProtectedRoutes allowedRoles={["admin", "user"]}>
                   <MenuEdit />
+                </ProtectedRoutes>
+              </SuspenseErrorBoundary>
+            }
+          />
+        </Route>
+        <Route path="category/*" element={<Outlet />}>
+          <Route
+            index
+            element={
+              <SuspenseErrorBoundary>
+                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                  <Category />
+                </ProtectedRoutes>
+              </SuspenseErrorBoundary>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <SuspenseErrorBoundary>
+                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                  <CategoryAdd />
+                </ProtectedRoutes>
+              </SuspenseErrorBoundary>
+            }
+          />
+          <Route
+            path=":categoryId/edit"
+            element={
+              <SuspenseErrorBoundary>
+                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                  <CategoryEdit />
                 </ProtectedRoutes>
               </SuspenseErrorBoundary>
             }
