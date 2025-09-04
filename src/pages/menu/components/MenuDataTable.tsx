@@ -17,20 +17,7 @@ const defaultColumns: TableColumnsType<DataType> = [
     title: "Name",
     dataIndex: "name",
     key: "name",
-    filters: [
-      {
-        text: "Joe",
-        value: "Joe",
-      },
-      {
-        text: "Category 1",
-        value: "Category 1",
-      },
-      {
-        text: "Category 2",
-        value: "Category 2",
-      },
-    ],
+    filters: [],
     filterMode: "tree",
     filterSearch: true,
     onFilter: (value, record) => record.name.startsWith(value as string),
@@ -67,10 +54,6 @@ const defaultColumns: TableColumnsType<DataType> = [
     render: (_, { category }) => (
       <>
         {category.map((cat: string) => {
-          // let color = category.length > 5 ? "geekblue" : "green";
-          // if (category === "loser") {
-          //   color = "volcano";
-          // }
           return (
             <Tag color="blue" key={cat}>
               {cat.toUpperCase()}
@@ -87,10 +70,6 @@ const defaultColumns: TableColumnsType<DataType> = [
     render: (_, { ingredients }) => (
       <>
         {ingredients.map((ingredientItem: string) => {
-          // let color = ingredient.length > 5 ? "geekblue" : "green";
-          // if (ingredient === "loser") {
-          //   color = "volcano";
-          // }
           return (
             <Tag color="volcano" key={ingredientItem}>
               {ingredientItem.toUpperCase()}
@@ -106,7 +85,7 @@ const defaultColumns: TableColumnsType<DataType> = [
     fixed: "right",
     render: (_, record) => (
       <Space size="middle">
-        <Link to={`/menu/update/${record.id}`}>Update</Link>
+        <Link to={`/menu/${record.id}/edit`}>Edit</Link>
         <DeleteButton />
       </Space>
     ),
@@ -180,7 +159,7 @@ const MenuDataTable = () => {
     };
   }, []);
 
-  return <Table<DataType> columns={columns} dataSource={data} bordered />;
+  return <Table<DataType> columns={columns} dataSource={data} bordered rowKey="id" />;
 };
 
 export default MenuDataTable;
