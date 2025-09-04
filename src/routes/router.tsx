@@ -35,7 +35,7 @@ const router = createBrowserRouter(
             </SuspenseErrorBoundary>
           }
         />
-        <Route path="/menu*" element={<Outlet />}>
+        <Route path="menu/*" element={<Outlet />}>
           <Route
             index
             element={

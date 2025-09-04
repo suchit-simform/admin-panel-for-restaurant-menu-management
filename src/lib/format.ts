@@ -1,8 +1,9 @@
 import type { CurrencyOption } from "src/types/common";
 
 export const formatPrice = (price: number = 0, currencyOption?: CurrencyOption): string => {
-  return Intl.NumberFormat(currencyOption?.locales || "en-US", {
-    style: currencyOption?.style || "currency",
-    currency: currencyOption?.currency || "USD",
+  const { locales = "en-US", style = "currency", currency = "USD" } = currencyOption || {};
+  return Intl.NumberFormat(locales, {
+    style,
+    currency,
   }).format(price);
 };
