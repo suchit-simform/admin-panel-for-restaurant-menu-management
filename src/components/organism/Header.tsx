@@ -1,7 +1,7 @@
 import { ArrowLeftOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Divider, Flex, Typography } from "antd";
+import { Button, Flex, Typography } from "antd";
+import React, { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import React, { Fragment, useMemo } from "react";
 
 type Props = {
   headerType: "add" | "edit" | "list";
@@ -31,39 +31,36 @@ const Header: React.FC<Props> = ({ headerType, title, moduleName, moduleRouteKey
   }, [headerType, moduleName, title]);
 
   return (
-    <Fragment>
-      <Flex justify="space-between" align="center">
-        <Flex align="center" gap={8}>
-          {shouldDisplayBackNavigationButton && (
-            <Button
-              type="link"
-              onClick={() => navigate(-1)}
-              icon={<ArrowLeftOutlined />}
-              iconPosition="start"
-              shape="circle"
-            ></Button>
-          )}
-          <Typography.Title level={2} style={{ marginBottom: 0 }}>
-            {parsedTitle}
-          </Typography.Title>
-        </Flex>
-        <Link to={`/${moduleRouteKey}/add`}>
-          {shouldDisplayAddButton && (
-            <Button
-              type="primary"
-              shape="round"
-              size="large"
-              icon={<PlusOutlined />}
-              iconPosition="start"
-              onClick={onAddClick}
-            >
-              Add
-            </Button>
-          )}
-        </Link>
+    <Flex justify="space-between" align="center">
+      <Flex align="center" gap={8}>
+        {shouldDisplayBackNavigationButton && (
+          <Button
+            type="link"
+            onClick={() => navigate(-1)}
+            icon={<ArrowLeftOutlined />}
+            iconPosition="start"
+            shape="circle"
+          ></Button>
+        )}
+        <Typography.Title level={4} style={{ marginBottom: 0 }}>
+          {parsedTitle}
+        </Typography.Title>
       </Flex>
-      <Divider />
-    </Fragment>
+      <Link to={`/${moduleRouteKey}/add`}>
+        {shouldDisplayAddButton && (
+          <Button
+            type="primary"
+            shape="round"
+            size="large"
+            icon={<PlusOutlined />}
+            iconPosition="start"
+            onClick={onAddClick}
+          >
+            Add
+          </Button>
+        )}
+      </Link>
+    </Flex>
   );
 };
 
