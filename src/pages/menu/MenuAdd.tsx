@@ -1,12 +1,18 @@
-import { Divider, Flex, Typography } from "antd";
+import { Flex } from "antd";
+import Header from "../../components/organism/Header";
 
 const MenuAdd = () => {
   return (
     <Flex vertical>
-      <Flex justify="space-between">
-        <Typography.Title level={2}>Add Menu Item</Typography.Title>
-      </Flex>
-      <Divider />
+      <Header
+        headerType="add"
+        moduleName="menu"
+        moduleRouteKey="menu"
+        onAddClick={() => {
+          console.log("Add button clicked");
+        }}
+        title="Menu Feature"
+      />
     </Flex>
   );
 };
