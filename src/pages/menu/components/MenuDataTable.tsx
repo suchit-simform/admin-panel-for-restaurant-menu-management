@@ -23,7 +23,7 @@ const defaultColumns: TableColumnsType<Menu> = [
     filters: [],
     filterMode: "tree",
     filterSearch: true,
-    onFilter: (value, record) => record.name.startsWith(value as string),
+    onFilter: (value, record) => record.name.includes(value as string),
   },
   {
     title: "Description",

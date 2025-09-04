@@ -55,7 +55,7 @@ const Header: React.FC<Props> = ({ headerType, title, moduleName, moduleRouteKey
               size="large"
               icon={<PlusOutlined />}
               iconPosition="start"
-              {...(onAddClick ? { onClick: onAddClick } : {})}
+              onClick={onAddClick}
             >
               Add
             </Button>

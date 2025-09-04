@@ -19,8 +19,8 @@ const DeleteButton: React.FC<Props> = ({
     <Popconfirm
       title={title}
       description={description}
-      {...(onConfirm ? { onConfirm } : {})}
-      {...(onCancel ? { onCancel } : {})}
+      onConfirm={onConfirm}
+      onCancel={onCancel}
       okText="Yes"
       cancelText="No"
       {...restProps}
