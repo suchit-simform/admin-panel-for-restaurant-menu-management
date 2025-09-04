@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import Layout from "src/components/organism/layout/Layout";
+import BaseLayout from "src/components/organism/layout/Layout";
 import { useAppSelector } from "src/store";
 
 const PrivateRoutes = () => {
@@ -33,9 +33,9 @@ const PrivateRoutes = () => {
   // const authenticated = false;
 
   return isAuthenticated ? (
-    <Layout isViewOnly={false}>
+    <BaseLayout isViewOnly={false}>
       <Outlet />
-    </Layout>
+    </BaseLayout>
   ) : (
     <Navigate to="/auth/login" />
   );

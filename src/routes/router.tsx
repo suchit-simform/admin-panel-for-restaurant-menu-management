@@ -1,6 +1,6 @@
 import { lazy } from "react";
 import { createBrowserRouter, createRoutesFromElements, Outlet, Route } from "react-router-dom";
-import Layout from "src/components/organism/layout/Layout";
+import BaseLayout from "src/components/organism/layout/Layout";
 import { SuspenseErrorBoundary } from "./SuspenseErrorBoundary";
 import ProtectedRoutes from "./ProtectedRoutes";
 
@@ -109,9 +109,9 @@ const router = createBrowserRouter(
         path="agreement"
         element={
           <SuspenseErrorBoundary>
-            <Layout isViewOnly={true}>
+            <BaseLayout isViewOnly={true}>
               <Agreement />
-            </Layout>
+            </BaseLayout>
           </SuspenseErrorBoundary>
         }
       />
