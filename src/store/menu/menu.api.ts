@@ -1,11 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import cookies from "js-cookie";
+import { getStoredMenuItems } from "src/lib/helper";
 import { MENU_API_REDUCER_KEY, MENU_TAG_TYPE } from "../helper/constant";
 import { convertErrorIntoFetchBaseQueryError } from "../helper/error";
 import { LOCAL_STORAGE_MENU_KEY } from "./menu.constant";
-import { getStoredMenuItems } from "./menu.helper";
 import type { Menu } from "./menu.type";
-import type { BaseQueryFn, FetchArgs, BaseQueryApi, FetchBaseQueryExtraOptions } from "@reduxjs/toolkit/query";
 
 const environment = import.meta.env;
 
@@ -33,13 +32,7 @@ const baseQuery = fetchBaseQuery({
 //then add logic to generate the new access token with refresh token
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const baseQueryWithReAuth: BaseQueryFn<
-  string | FetchArgs,
-  unknown,
-  unknown,
-  FetchBaseQueryExtraOptions,
-  BaseQueryApi
-> = async (args, api, extraOptions) => {
+const baseQueryWithReAuth = async (args: any, api: any, extraOptions: any) => {
   const result = await baseQuery(args, api, extraOptions);
   if (result?.error?.status === 401) {
     // send refresh token to get new access token
@@ -70,7 +63,7 @@ export const menuApi = createApi({
       queryFn: async (newMenuItem) => {
         try {
           // Get current menu items from localStorage
-          const menuItems = getStoredMenuItems();
+          const menuItems = getStoredMenuItems<Menu>(LOCAL_STORAGE_MENU_KEY);
 
           // Add the new menu item
           const updatedMenuItems = [...menuItems, newMenuItem];
@@ -89,7 +82,7 @@ export const menuApi = createApi({
       queryFn: async (updatedMenuItem) => {
         try {
           // Get current menu items from localStorage
-          const menuItems = getStoredMenuItems();
+          const menuItems = getStoredMenuItems<Menu>(LOCAL_STORAGE_MENU_KEY);
 
           const doesMenuItemIdFound = menuItems.find((item) => item.id === updatedMenuItem.id);
           if (!doesMenuItemIdFound) {
@@ -114,7 +107,7 @@ export const menuApi = createApi({
       queryFn: async (id) => {
         try {
           // Get current menu items from localStorage
-          const menuItems = getStoredMenuItems();
+          const menuItems = getStoredMenuItems<Menu>(LOCAL_STORAGE_MENU_KEY);
 
           const doesMenuItemIdFound = menuItems.find((item) => item.id === id);
           if (!doesMenuItemIdFound) {
@@ -137,7 +130,7 @@ export const menuApi = createApi({
     getMenuItems: builder.query<Menu[], void>({
       queryFn: async () => {
         try {
-          const menuItems = getStoredMenuItems();
+          const menuItems = getStoredMenuItems<Menu>(LOCAL_STORAGE_MENU_KEY);
           return { data: menuItems };
         } catch (error) {
           return convertErrorIntoFetchBaseQueryError(error);
