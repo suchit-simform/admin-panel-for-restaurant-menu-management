@@ -3,10 +3,13 @@ import { Space, Table, Tag, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DeleteButton from "src/components/molecules/deleteButton";
+import EditButton from "src/components/molecules/editButton";
+import { formatPrice } from "src/lib/format";
+import type { Menu } from "src/store/menu/menu.type";
 
 const { Text } = Typography;
 
-const defaultColumns: TableColumnsType<DataType> = [
+const defaultColumns: TableColumnsType<Menu> = [
   {
     title: "id",
     dataIndex: "id",
@@ -38,10 +41,10 @@ const defaultColumns: TableColumnsType<DataType> = [
     title: "Price",
     dataIndex: "price",
     key: "price",
-    render: (text) => {
+    render: (text, { currencyOption }) => {
       return (
         <Text style={{ width: 100 }} ellipsis={{ tooltip: text }}>
-          {Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(text)}
+          {formatPrice(text, currencyOption)}
         </Text>
       );
     },
@@ -85,28 +88,24 @@ const defaultColumns: TableColumnsType<DataType> = [
     fixed: "right",
     render: (_, record) => (
       <Space size="middle">
-        <Link to={`/menu/${record.id}/edit`}>Edit</Link>
+        <EditButton routeTo={`/menu/${record.id}/edit`} />
         <DeleteButton />
       </Space>
     ),
   },
 ];
-interface DataType {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  category: string[];
-  ingredients: string[];
-  isAvailable: boolean;
-}
 
-const data: DataType[] = [
+const data: Menu[] = [
   {
     id: "1",
     name: "Margherita Pizza",
     description: "Classic pizza with tomato sauce and mozzarella cheese",
     price: 299,
+    currencyOption: {
+      locales: "en-US",
+      style: "currency",
+      currency: "USD",
+    },
     category: ["Pizza", "Vegetarian"],
     isAvailable: true,
     ingredients: ["Tomato", "Mozzarella", "Basil"],
@@ -116,6 +115,11 @@ const data: DataType[] = [
     name: "Chicken Burger",
     description: "Grilled chicken patty with lettuce and mayo",
     price: 199,
+    currencyOption: {
+      locales: "en-US",
+      style: "currency",
+      currency: "USD",
+    },
     category: ["Burger", "Non-Vegetarian"],
     isAvailable: true,
     ingredients: ["Chicken", "Lettuce", "Mayo", "Bun"],
@@ -125,6 +129,11 @@ const data: DataType[] = [
     name: "Caesar Salad",
     description: "Fresh romaine lettuce with Caesar dressing",
     price: 149,
+    currencyOption: {
+      locales: "en-US",
+      style: "currency",
+      currency: "USD",
+    },
     category: ["Salad", "Vegetarian"],
     isAvailable: false,
     ingredients: ["Lettuce", "Croutons", "Parmesan", "Caesar Dressing"],
@@ -132,7 +141,7 @@ const data: DataType[] = [
 ];
 
 const MenuDataTable = () => {
-  const [columns, setColumns] = useState<TableColumnsType<DataType>>(defaultColumns);
+  const [columns, setColumns] = useState<TableColumnsType<Menu>>(defaultColumns);
 
   // effect to add dynamic data values inside name filter
   useEffect(() => {
@@ -153,13 +162,9 @@ const MenuDataTable = () => {
 
       return prev;
     });
-
-    return () => {
-      setColumns(defaultColumns);
-    };
   }, []);
 
-  return <Table<DataType> columns={columns} dataSource={data} bordered rowKey="id" />;
+  return <Table<Menu> columns={columns} dataSource={data} bordered rowKey="id" />;
 };
 
 export default MenuDataTable;
