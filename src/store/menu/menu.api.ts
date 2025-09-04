@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import cookies from "js-cookie";
-import { getStoredMenuItems } from "src/lib/helper";
+import { getLocalStoredItems } from "src/lib/helper";
 import { MENU_API_REDUCER_KEY, MENU_TAG_TYPE } from "../helper/constant";
 import { convertErrorIntoFetchBaseQueryError } from "../helper/error";
 import { LOCAL_STORAGE_MENU_KEY } from "./menu.constant";
@@ -63,7 +63,7 @@ export const menuApi = createApi({
       queryFn: async (newMenuItem) => {
         try {
           // Get current menu items from localStorage
-          const menuItems = getStoredMenuItems<Menu>(LOCAL_STORAGE_MENU_KEY);
+          const menuItems = getLocalStoredItems<Menu>(LOCAL_STORAGE_MENU_KEY);
 
           // Add the new menu item
           const updatedMenuItems = [...menuItems, newMenuItem];
@@ -82,7 +82,7 @@ export const menuApi = createApi({
       queryFn: async (updatedMenuItem) => {
         try {
           // Get current menu items from localStorage
-          const menuItems = getStoredMenuItems<Menu>(LOCAL_STORAGE_MENU_KEY);
+          const menuItems = getLocalStoredItems<Menu>(LOCAL_STORAGE_MENU_KEY);
 
           const doesMenuItemIdFound = menuItems.find((item) => item.id === updatedMenuItem.id);
           if (!doesMenuItemIdFound) {
@@ -107,7 +107,7 @@ export const menuApi = createApi({
       queryFn: async (id) => {
         try {
           // Get current menu items from localStorage
-          const menuItems = getStoredMenuItems<Menu>(LOCAL_STORAGE_MENU_KEY);
+          const menuItems = getLocalStoredItems<Menu>(LOCAL_STORAGE_MENU_KEY);
 
           const doesMenuItemIdFound = menuItems.find((item) => item.id === id);
           if (!doesMenuItemIdFound) {
@@ -130,7 +130,7 @@ export const menuApi = createApi({
     getMenuItems: builder.query<Menu[], void>({
       queryFn: async () => {
         try {
-          const menuItems = getStoredMenuItems<Menu>(LOCAL_STORAGE_MENU_KEY);
+          const menuItems = getLocalStoredItems<Menu>(LOCAL_STORAGE_MENU_KEY);
           return { data: menuItems };
         } catch (error) {
           return convertErrorIntoFetchBaseQueryError(error);

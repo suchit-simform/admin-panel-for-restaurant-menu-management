@@ -1,4 +1,4 @@
-export const getStoredMenuItems = <T>(
+export const getLocalStoredItems = <T>(
   localStorageKey: string,
   errorMessage: string = "Exception while parsing localstorage menu item data",
 ) => {
