@@ -1,26 +1,36 @@
-.nav {
+.header {
   background-color: #ea495c;
+  min-height: fit-content;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;
+  flex-wrap: wrap;
 }
 
-.nav_ul {
-  list-style-type: none;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 20rem;
+.menu {
+  background-color: #ea495c;
 }
-
-.nav_link {
-  text-decoration: none;
-  color: white;
-}
-
 
 .content {
-  padding: 2rem;
-  padding-bottom: 0;
+  padding: 1rem 1.5rem;
+}
+
+.sider {
+  background: #ea495c;
+  padding-top: 10rem;
+}
+
+.sider_logo {
+  margin-bottom: 4rem;
+}
+
+.sider_logo img {
+  width: 80%;
+}
+
+/* lg: '992px', */
+@media (min-width: 993px) {
+  .sider_logo {
+    display: none;
+  }
 }

@@ -1,10 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import cookies from "js-cookie";
 import { getLocalStoredItems } from "src/lib/helper";
-import { MENU_API_REDUCER_KEY, MENU_TAG_TYPE } from "../helper/constant";
 import { convertErrorIntoFetchBaseQueryError } from "../helper/error";
-import { LOCAL_STORAGE_MENU_KEY } from "./menu.constant";
-import type { Menu } from "./menu.type";
+import { CATEGORY_API_REDUCER_KEY, CATEGORY_TAG_TYPE, LOCAL_STORAGE_CATEGORY_KEY } from "./category.constant";
+import type { Category } from "./category.type";
 
 const environment = import.meta.env;
 
@@ -51,87 +50,89 @@ const baseQueryWithReAuth = async (args: any, api: any, extraOptions: any) => {
   return result;
 };
 
-export const menuApi = createApi({
-  reducerPath: MENU_API_REDUCER_KEY,
+export const categoryApi = createApi({
+  reducerPath: CATEGORY_API_REDUCER_KEY,
   baseQuery: baseQueryWithReAuth,
-  tagTypes: [MENU_TAG_TYPE],
+  tagTypes: [CATEGORY_TAG_TYPE],
   keepUnusedDataFor: 60 * 5,
   refetchOnReconnect: true,
   endpoints: (builder) => ({
     //on the login you can save the cookie with js-cookie
-    addMenuItem: builder.mutation<Menu[], Menu>({
-      queryFn: async (newMenuItem) => {
+    addCategoryItem: builder.mutation<Category[], Category>({
+      queryFn: async (newCategoryItem) => {
         try {
-          // Get current menu items from localStorage
-          const menuItems = getLocalStoredItems<Menu>(LOCAL_STORAGE_MENU_KEY);
+          // Get current category items from localStorage
+          const categoryItems = getLocalStoredItems<Category>(LOCAL_STORAGE_CATEGORY_KEY);
 
-          // Add the new menu item
-          const updatedMenuItems = [...menuItems, newMenuItem];
+          // Add the new category item
+          const updatedCategoryItems = [...categoryItems, newCategoryItem];
 
           // Save back to localStorage
-          localStorage.setItem(LOCAL_STORAGE_MENU_KEY, JSON.stringify(updatedMenuItems));
+          localStorage.setItem(LOCAL_STORAGE_CATEGORY_KEY, JSON.stringify(updatedCategoryItems));
 
           // Return updated list
-          return { data: updatedMenuItems };
+          return { data: updatedCategoryItems };
         } catch (error) {
           return convertErrorIntoFetchBaseQueryError(error);
         }
       },
     }),
-    updateMenuItem: builder.mutation<Menu[], Menu>({
-      queryFn: async (updatedMenuItem) => {
+    updateCategoryItem: builder.mutation<Category[], Category>({
+      queryFn: async (updatedCategoryItem) => {
         try {
-          // Get current menu items from localStorage
-          const menuItems = getLocalStoredItems<Menu>(LOCAL_STORAGE_MENU_KEY);
+          // Get current category items from localStorage
+          const categoryItems = getLocalStoredItems<Category>(LOCAL_STORAGE_CATEGORY_KEY);
 
-          const doesMenuItemIdFound = menuItems.find((item) => item.id === updatedMenuItem.id);
-          if (!doesMenuItemIdFound) {
-            return convertErrorIntoFetchBaseQueryError(new Error("Menu item not found"));
+          const doesCategoryItemIdFound = categoryItems.find((item) => item.id === updatedCategoryItem.id);
+          if (!doesCategoryItemIdFound) {
+            return convertErrorIntoFetchBaseQueryError(new Error("Category item not found"));
           }
 
-          // Update the menu item by id
-          const updatedMenuItems = menuItems.map((item) => (item.id === updatedMenuItem.id ? updatedMenuItem : item));
+          // Update the category item by id
+          const updatedCategoryItems = categoryItems.map((item) =>
+            item.id === updatedCategoryItem.id ? updatedCategoryItem : item,
+          );
 
           // Save back to localStorage
-          localStorage.setItem(LOCAL_STORAGE_MENU_KEY, JSON.stringify(updatedMenuItems));
+          localStorage.setItem(LOCAL_STORAGE_CATEGORY_KEY, JSON.stringify(updatedCategoryItems));
 
           // Return updated list
-          return { data: updatedMenuItems };
+          return { data: updatedCategoryItems };
         } catch (error) {
           return convertErrorIntoFetchBaseQueryError(error);
         }
       },
     }),
 
-    deleteMenuItem: builder.mutation<Menu[], string>({
+    deleteCategoryItem: builder.mutation<Category[], string>({
       queryFn: async (id) => {
         try {
-          // Get current menu items from localStorage
-          const menuItems = getLocalStoredItems<Menu>(LOCAL_STORAGE_MENU_KEY);
+          // Get current category items from localStorage
+          const categoryItems = getLocalStoredItems<Category>(LOCAL_STORAGE_CATEGORY_KEY);
 
-          const doesMenuItemIdFound = menuItems.find((item) => item.id === id);
-          if (!doesMenuItemIdFound) {
-            return convertErrorIntoFetchBaseQueryError(new Error("Menu item not found"));
+          const doesCategoryItemIdFound = categoryItems.find((item) => item.id === id);
+          if (!doesCategoryItemIdFound) {
+            return convertErrorIntoFetchBaseQueryError(new Error("Category item not found"));
           }
 
-          // Remove the menu item by id
-          const updatedMenuItems = menuItems.filter((item) => item.id !== id);
+          // Remove the category item by id
+          const updatedCategoryItems = categoryItems.filter((item) => item.id !== id);
 
           // Save back to localStorage
-          localStorage.setItem(LOCAL_STORAGE_MENU_KEY, JSON.stringify(updatedMenuItems));
+          localStorage.setItem(LOCAL_STORAGE_CATEGORY_KEY, JSON.stringify(updatedCategoryItems));
 
           // Return updated list
-          return { data: updatedMenuItems };
+          return { data: updatedCategoryItems };
         } catch (error) {
           return convertErrorIntoFetchBaseQueryError(error);
         }
       },
     }),
-    getMenuItems: builder.query<Menu[], void>({
+    getCategoryItems: builder.query<Category[], void>({
       queryFn: async () => {
         try {
-          const menuItems = getLocalStoredItems<Menu>(LOCAL_STORAGE_MENU_KEY);
-          return { data: menuItems };
+          const categoryItems = getLocalStoredItems<Category>(LOCAL_STORAGE_CATEGORY_KEY);
+          return { data: categoryItems };
         } catch (error) {
           return convertErrorIntoFetchBaseQueryError(error);
         }
