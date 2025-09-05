@@ -1,6 +1,6 @@
 export const getLocalStoredItems = <T>(
   localStorageKey: string,
-  errorMessage: string = "Exception while parsing localstorage menu item data",
+  errorMessage: string = "Exception while parsing localStorage data",
 ) => {
   const stored = localStorage.getItem(localStorageKey);
   let items: Array<T> = [];
