@@ -37,6 +37,14 @@ const items = [
       </Link>
     ),
   },
+  {
+    key: 4,
+    label: (
+      <Link to={"/ingredient"} className={styles.nav_link}>
+        Ingredient
+      </Link>
+    ),
+  },
 ];
 
 type Props = { children: React.ReactNode; isViewOnly: boolean };
