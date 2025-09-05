@@ -21,6 +21,10 @@ const Category = lazy(() => import("../pages/category/Category"));
 const CategoryAdd = lazy(() => import("../pages/category/CategoryAdd"));
 const CategoryEdit = lazy(() => import("../pages/category/CategoryEdit"));
 
+const Ingredient = lazy(() => import("../pages/ingredient/Ingredient"));
+const IngredientAdd = lazy(() => import("../pages/ingredient/IngredientAdd"));
+const IngredientEdit = lazy(() => import("../pages/ingredient/IngredientEdit"));
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -99,6 +103,38 @@ const router = createBrowserRouter(
               <SuspenseErrorBoundary>
                 <ProtectedRoutes allowedRoles={["admin", "user"]}>
                   <CategoryEdit />
+                </ProtectedRoutes>
+              </SuspenseErrorBoundary>
+            }
+          />
+        </Route>
+        <Route path="ingredient/*" element={<Outlet />}>
+          <Route
+            index
+            element={
+              <SuspenseErrorBoundary>
+                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                  <Ingredient />
+                </ProtectedRoutes>
+              </SuspenseErrorBoundary>
+            }
+          />
+          <Route
+            path="add"
+            element={
+              <SuspenseErrorBoundary>
+                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                  <IngredientAdd />
+                </ProtectedRoutes>
+              </SuspenseErrorBoundary>
+            }
+          />
+          <Route
+            path=":ingredientId/edit"
+            element={
+              <SuspenseErrorBoundary>
+                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                  <IngredientEdit />
                 </ProtectedRoutes>
               </SuspenseErrorBoundary>
             }
