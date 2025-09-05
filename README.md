@@ -51,3 +51,8 @@ This boilerplate is starting point of any project with all batteries included. y
 1. If you facing issue like `src/*` file is not getting imported and showing error inside your ide
    1. **Solution**: add below line inside both `tsconfig.app.json` and `tsconfig.node.json`
       1. Inside `compilerOption` add `baseUrl: "./"`
+
+### Common Developer FAQ for Antd library
+
+1. Why `message.success` direct not able to use
+   1. ref: https://stackoverflow.com/a/77405636

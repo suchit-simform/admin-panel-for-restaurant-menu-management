@@ -14,7 +14,7 @@ export const ingredientSlice = createSlice({
   initialState,
   reducers: {
     addIngredient: (state, action: PayloadAction<Ingredient>) => {
-      state.items.push(action.payload);
+      state.items = [...state.items, action.payload];
     },
     removeIngredient: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
@@ -25,9 +25,12 @@ export const ingredientSlice = createSlice({
         state.items[index] = action.payload;
       }
     },
+    setIngredients: (state, action: PayloadAction<Ingredient[]>) => {
+      state.items = action.payload;
+    },
   },
 });
 
-export const { addIngredient, removeIngredient, updateIngredient } = ingredientSlice.actions;
+export const { addIngredient, removeIngredient, updateIngredient, setIngredients } = ingredientSlice.actions;
 
 export default ingredientSlice.reducer;

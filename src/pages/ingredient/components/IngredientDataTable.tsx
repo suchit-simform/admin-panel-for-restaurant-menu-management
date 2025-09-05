@@ -4,11 +4,14 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DeleteButton from "src/components/molecules/deleteButton";
 import EditButton from "src/components/molecules/editButton";
+import { useAppDispatch } from "src/store";
+import { ingredientApi } from "src/store/ingredient/ingredient.api";
+import { setIngredients } from "src/store/ingredient/ingredient.slice";
 import type { Ingredient } from "src/store/ingredient/ingredient.type";
 
 type DataType = Ingredient;
 
-const defaultColumns: TableColumnsType<DataType> = [
+const defaultColumns = (handleDelete: (id: string) => void): TableColumnsType<DataType> => [
   {
     title: "id",
     dataIndex: "id",
@@ -31,39 +34,39 @@ const defaultColumns: TableColumnsType<DataType> = [
     render: (_, record) => (
       <Space size="middle">
         <EditButton routeTo={`/ingredient/${record.id}/edit`} />
-        <DeleteButton />
+        <DeleteButton onConfirm={() => handleDelete(record.id)} />
       </Space>
     ),
   },
 ];
 
-const data: DataType[] = [
-  {
-    id: "1",
-    name: "Margherita Pizza",
-  },
-  {
-    id: "2",
-    name: "Chicken Burger",
-  },
-  {
-    id: "3",
-    name: "Caesar Salad",
-  },
-];
-
 const IngredientDataTable = () => {
-  const [columns, setColumns] = useState<TableColumnsType<DataType>>(defaultColumns);
+  const dispatch = useAppDispatch();
 
-  // effect to add dynamic data values inside name filter
+  const { data: fetchedIngredients, isLoading: isFetchingIngredientsPending } =
+    ingredientApi.useGetIngredientItemsQuery();
+  const [handleDelete, { isLoading: isDeletingIngredientPending }] = ingredientApi.useDeleteIngredientItemMutation();
+
+  const handleDeleteIngredient = async (id: string) => {
+    await handleDelete(id);
+    dispatch(ingredientApi.util.resetApiState());
+  };
+
+  const [columns, setColumns] = useState<TableColumnsType<DataType>>(defaultColumns(handleDeleteIngredient));
+
+  // effect to add dynamic data values inside name filter if data is present
   useEffect(() => {
+    if (!fetchedIngredients) {
+      return;
+    }
+    dispatch(setIngredients(fetchedIngredients));
     // Fetch data or perform side effects here
     setColumns((prev) => {
-      if (!data.length) {
+      if (!fetchedIngredients.length) {
         return prev;
       }
 
-      const nameFilter = data.map((item) => ({
+      const nameFilter = fetchedIngredients.map((item) => ({
         text: item.name,
         value: item.name,
       }));
@@ -74,9 +77,17 @@ const IngredientDataTable = () => {
 
       return prev;
     });
-  }, []);
+  }, [dispatch, fetchedIngredients, isFetchingIngredientsPending]);
 
-  return <Table<DataType> columns={columns} dataSource={data} bordered rowKey="id" />;
+  return (
+    <Table<DataType>
+      columns={columns}
+      dataSource={fetchedIngredients || []}
+      bordered
+      rowKey="id"
+      loading={isFetchingIngredientsPending || isDeletingIngredientPending}
+    />
+  );
 };
 
 export default IngredientDataTable;

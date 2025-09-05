@@ -4,9 +4,14 @@ import { getLocalStoredItems } from "src/lib/helper";
 import { convertErrorIntoFetchBaseQueryError } from "../helper/error";
 import { INGREDIENT_API_REDUCER_KEY, INGREDIENT_TAG_TYPE, LOCAL_STORAGE_INGREDIENT_KEY } from "./ingredient.constant";
 import type { Ingredient } from "./ingredient.type";
+import { v4 as uuidV4 } from "uuid";
 
 const environment = import.meta.env;
 
+/**
+ * TODO: need to write custom baseQuery which perform operation on localstorage for CRUD
+ * and also need to handle the error properly
+ */
 const baseQuery = fetchBaseQuery({
   baseUrl: environment.VITE_APP_BASE_URL,
   credentials: "include",
@@ -57,21 +62,25 @@ export const ingredientApi = createApi({
   keepUnusedDataFor: 60 * 5,
   refetchOnReconnect: true,
   endpoints: (builder) => ({
-    //on the login you can save the cookie with js-cookie
-    addIngredientItem: builder.mutation<Ingredient[], Ingredient>({
+    addIngredientItem: builder.mutation<Ingredient, Omit<Ingredient, "id">>({
       queryFn: async (newIngredientItem) => {
         try {
           // Get current ingredient items from localStorage
           const ingredientItems = getLocalStoredItems<Ingredient>(LOCAL_STORAGE_INGREDIENT_KEY);
 
+          const payload = {
+            id: uuidV4(),
+            ...newIngredientItem,
+          };
+
           // Add the new ingredient item
-          const updatedIngredientItems = [...ingredientItems, newIngredientItem];
+          const updatedIngredientItems = [...ingredientItems, payload];
 
           // Save back to localStorage
           localStorage.setItem(LOCAL_STORAGE_INGREDIENT_KEY, JSON.stringify(updatedIngredientItems));
 
           // Return updated list
-          return { data: updatedIngredientItems };
+          return { data: payload };
         } catch (error) {
           return convertErrorIntoFetchBaseQueryError(error);
         }
@@ -104,7 +113,7 @@ export const ingredientApi = createApi({
       },
     }),
 
-    deleteIngredientItem: builder.mutation<Ingredient[], string>({
+    deleteIngredientItem: builder.mutation<Ingredient[], Ingredient["id"]>({
       queryFn: async (id) => {
         try {
           // Get current ingredient items from localStorage
