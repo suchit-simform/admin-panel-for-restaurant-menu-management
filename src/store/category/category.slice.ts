@@ -14,7 +14,7 @@ export const categorySlice = createSlice({
   initialState,
   reducers: {
     addCategory: (state, action: PayloadAction<Category>) => {
-      state.items.push(action.payload);
+      state.items = [...state.items, action.payload];
     },
     removeCategoryItem: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
@@ -25,9 +25,12 @@ export const categorySlice = createSlice({
         state.items[index] = action.payload;
       }
     },
+    setCategories: (state, action: PayloadAction<Category[]>) => {
+      state.items = action.payload;
+    },
   },
 });
 
-export const { addCategory, removeCategoryItem, updateCategoryItem } = categorySlice.actions;
+export const { addCategory, removeCategoryItem, updateCategoryItem, setCategories } = categorySlice.actions;
 
 export default categorySlice.reducer;

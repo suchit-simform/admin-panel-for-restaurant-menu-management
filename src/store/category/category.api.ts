@@ -4,9 +4,14 @@ import { getLocalStoredItems } from "src/lib/helper";
 import { convertErrorIntoFetchBaseQueryError } from "../helper/error";
 import { CATEGORY_API_REDUCER_KEY, CATEGORY_TAG_TYPE, LOCAL_STORAGE_CATEGORY_KEY } from "./category.constant";
 import type { Category } from "./category.type";
+import { v4 as uuidV4 } from "uuid";
 
 const environment = import.meta.env;
 
+/**
+ * TODO: need to write custom baseQuery which perform operation on localstorage for CRUD
+ * and also need to handle the error properly
+ */
 const baseQuery = fetchBaseQuery({
   baseUrl: environment.VITE_APP_BASE_URL,
   credentials: "include",
@@ -58,20 +63,25 @@ export const categoryApi = createApi({
   refetchOnReconnect: true,
   endpoints: (builder) => ({
     //on the login you can save the cookie with js-cookie
-    addCategoryItem: builder.mutation<Category[], Category>({
+    addCategoryItem: builder.mutation<Category, Omit<Category, "id">>({
       queryFn: async (newCategoryItem) => {
         try {
           // Get current category items from localStorage
           const categoryItems = getLocalStoredItems<Category>(LOCAL_STORAGE_CATEGORY_KEY);
 
+          const payload = {
+            id: uuidV4(),
+            ...newCategoryItem,
+          };
+
           // Add the new category item
-          const updatedCategoryItems = [...categoryItems, newCategoryItem];
+          const updatedCategoryItems = [...categoryItems, payload];
 
           // Save back to localStorage
           localStorage.setItem(LOCAL_STORAGE_CATEGORY_KEY, JSON.stringify(updatedCategoryItems));
 
           // Return updated list
-          return { data: updatedCategoryItems };
+          return { data: payload };
         } catch (error) {
           return convertErrorIntoFetchBaseQueryError(error);
         }
@@ -104,7 +114,7 @@ export const categoryApi = createApi({
       },
     }),
 
-    deleteCategoryItem: builder.mutation<Category[], string>({
+    deleteCategoryItem: builder.mutation<Category[], Category["id"]>({
       queryFn: async (id) => {
         try {
           // Get current category items from localStorage
