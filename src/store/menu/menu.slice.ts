@@ -14,7 +14,7 @@ export const menuSlice = createSlice({
   initialState,
   reducers: {
     addMenuItem: (state, action: PayloadAction<Menu>) => {
-      state.items.push(action.payload);
+      state.items = [...state.items, action.payload];
     },
     removeMenuItem: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
@@ -25,9 +25,12 @@ export const menuSlice = createSlice({
         state.items[index] = action.payload;
       }
     },
+    setMenus: (state, action: PayloadAction<Menu[]>) => {
+      state.items = action.payload;
+    },
   },
 });
 
-export const { addMenuItem, removeMenuItem, updateMenuItem } = menuSlice.actions;
+export const { addMenuItem, removeMenuItem, updateMenuItem, setMenus } = menuSlice.actions;
 
 export default menuSlice.reducer;

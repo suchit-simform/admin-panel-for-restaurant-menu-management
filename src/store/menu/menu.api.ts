@@ -5,9 +5,14 @@ import { MENU_API_REDUCER_KEY, MENU_TAG_TYPE } from "../helper/constant";
 import { convertErrorIntoFetchBaseQueryError } from "../helper/error";
 import { LOCAL_STORAGE_MENU_KEY } from "./menu.constant";
 import type { Menu } from "./menu.type";
+import { v4 as uuidV4 } from "uuid";
 
 const environment = import.meta.env;
 
+/**
+ * TODO: need to write custom baseQuery which perform operation on localstorage for CRUD
+ * and also need to handle the error properly
+ */
 const baseQuery = fetchBaseQuery({
   baseUrl: environment.VITE_APP_BASE_URL,
   credentials: "include",
@@ -59,20 +64,25 @@ export const menuApi = createApi({
   refetchOnReconnect: true,
   endpoints: (builder) => ({
     //on the login you can save the cookie with js-cookie
-    addMenuItem: builder.mutation<Menu[], Menu>({
+    addMenuItem: builder.mutation<Menu, Omit<Menu, "id">>({
       queryFn: async (newMenuItem) => {
         try {
           // Get current menu items from localStorage
           const menuItems = getLocalStoredItems<Menu>(LOCAL_STORAGE_MENU_KEY);
 
+          const payload = {
+            id: uuidV4(),
+            ...newMenuItem,
+          };
+
           // Add the new menu item
-          const updatedMenuItems = [...menuItems, newMenuItem];
+          const updatedMenuItems = [...menuItems, payload];
 
           // Save back to localStorage
           localStorage.setItem(LOCAL_STORAGE_MENU_KEY, JSON.stringify(updatedMenuItems));
 
           // Return updated list
-          return { data: updatedMenuItems };
+          return { data: payload };
         } catch (error) {
           return convertErrorIntoFetchBaseQueryError(error);
         }
@@ -103,7 +113,7 @@ export const menuApi = createApi({
       },
     }),
 
-    deleteMenuItem: builder.mutation<Menu[], string>({
+    deleteMenuItem: builder.mutation<Menu[], Menu["id"]>({
       queryFn: async (id) => {
         try {
           // Get current menu items from localStorage
