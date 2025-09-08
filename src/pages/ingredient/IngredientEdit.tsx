@@ -10,9 +10,9 @@ import IngredientForm from "./components/IngredientForm";
 
 const IngredientEdit = () => {
   const params = useParams<{ ingredientId?: string }>();
-  const ingredients = useAppSelector((state) => state.ingredient.items);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const ingredients = useAppSelector((state) => state.ingredient.items);
 
   const { message } = App.useApp();
   const [form] = Form.useForm();
@@ -107,7 +107,6 @@ const IngredientEdit = () => {
             onFinish={onFinishHandler}
             disabled={isLoading}
             style={{ width: "100%" }}
-            preserve={false}
           >
             <IngredientForm />
             <Button type="primary" htmlType="submit" style={{ width: "fit-content" }} loading={isLoading}>

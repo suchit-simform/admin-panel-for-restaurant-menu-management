@@ -5,7 +5,7 @@ const CategoryForm = () => {
   return (
     <Fragment>
       <Form.Item label="Name" name="name" rules={[{ required: true, message: "Please input name!" }]}>
-        <Input />
+        <Input autoFocus />
       </Form.Item>
     </Fragment>
   );
