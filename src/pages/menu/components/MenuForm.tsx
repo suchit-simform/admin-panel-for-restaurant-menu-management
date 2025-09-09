@@ -2,6 +2,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Form, Input, InputNumber, Select, Switch, Upload } from "antd";
 import type { UploadChangeParam, UploadFile } from "antd/es/upload";
 import { Fragment } from "react/jsx-runtime";
+import { useAppSelector } from "src/store";
 
 const { TextArea } = Input;
 
@@ -13,10 +14,13 @@ const normFile = (e: UploadChangeParam | UploadFile[]) => {
 };
 
 const MenuForm = () => {
+  const categories = useAppSelector((state) => state.category.items);
+  const ingredients = useAppSelector((state) => state.ingredient.items);
+
   return (
     <Fragment>
       <Form.Item label="Name" name="name" rules={[{ required: true, message: "Please input name!" }]}>
-        <Input />
+        <Input autoFocus />
       </Form.Item>
       <Form.Item label="Description" name="description">
         <TextArea rows={4} />
@@ -25,13 +29,21 @@ const MenuForm = () => {
         <InputNumber min={0} style={{ width: "100%" }} />
       </Form.Item>
       <Form.Item label="Category" name="category">
-        <Select mode="multiple" allowClear>
-          <Select.Option value="demo">Demo</Select.Option>
+        <Select mode="multiple" allowClear optionFilterProp="name">
+          {categories.map((category) => (
+            <Select.Option key={category.id} value={category.id} name={category.name}>
+              {category.name}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
       <Form.Item label="Ingredients" name="ingredients">
-        <Select mode="multiple" allowClear>
-          <Select.Option value="demo">Demo</Select.Option>
+        <Select mode="multiple" allowClear optionFilterProp="name">
+          {ingredients.map((ingredient) => (
+            <Select.Option key={ingredient.id} value={ingredient.id} name={ingredient.name}>
+              {ingredient.name}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
       <Form.Item label="Upload" name="upload" valuePropName="fileList" getValueFromEvent={normFile}>

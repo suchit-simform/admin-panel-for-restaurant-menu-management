@@ -9,7 +9,7 @@ export type FormData = {
 export type Role = "admin" | "user";
 
 export type CurrencyOption = {
-  locales?: Intl.LocalesArgument;
+  locales?: string;
   style: Intl.NumberFormatOptions["style"];
   currency?: Intl.NumberFormatOptions["currency"];
 };
