@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DeleteButton from "src/components/molecules/deleteButton";
 import EditButton from "src/components/molecules/editButton";
-import { formatPrice } from "src/lib/format";
+import { currencyFormatter } from "src/components/molecules/InputNumberWithCurrency/util";
 import { useAppDispatch } from "src/store";
 import type { Category } from "src/store/category/category.type";
 import type { Ingredient } from "src/store/ingredient/ingredient.type";
@@ -48,10 +48,11 @@ const defaultColumns = (handleDelete: (id: string) => void): TableColumnsType<Da
     title: "Price",
     dataIndex: "price",
     key: "price",
-    render: (text, { currencyOption }) => {
+    render: (price, { currency }) => {
+      const parsedValue = currencyFormatter(currency)(price);
       return (
-        <Text style={{ width: 100 }} ellipsis={{ tooltip: text }}>
-          {formatPrice(text, currencyOption)}
+        <Text style={{ width: 100 }} ellipsis={{ tooltip: parsedValue }}>
+          {parsedValue}
         </Text>
       );
     },

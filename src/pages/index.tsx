@@ -5,7 +5,6 @@ import TabsAtom, { TabPane } from "../components/atoms/tabs";
 import FormDataTable from "../components/molecules/formDataTable";
 import FormContainer from "../components/organism/formContainer";
 import { useTheme } from "../context/themeContext";
-import "../styles/index.css";
 
 // Define action types
 type Action =

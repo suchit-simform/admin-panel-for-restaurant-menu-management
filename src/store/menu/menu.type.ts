@@ -1,4 +1,3 @@
-import type { CurrencyOption } from "src/types/common";
 import type { Category } from "../category/category.type";
 import type { Ingredient } from "../ingredient/ingredient.type";
 
@@ -7,7 +6,7 @@ export type Menu = {
   name: string;
   description: string;
   price: number;
-  currencyOption?: CurrencyOption;
+  currency: string;
   category: Category[];
   ingredients: Ingredient[];
   isAvailable: boolean;
