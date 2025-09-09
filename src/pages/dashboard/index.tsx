@@ -1,7 +1,7 @@
 import { Col, Flex, Row, Typography } from "antd";
 import React from "react";
 import ChartCardWrapper from "src/components/organism/ChartCardWrapper";
-import KPICard from "src/components/molecules/KPICards";
+import KPICard from "src/components/molecules/KPICard";
 import DemoLineChart from "src/components/molecules/DemoLineChart";
 import useCategories from "src/pages/menu/hooks/useCategories";
 import useIngredients from "src/pages/menu/hooks/useIngredients";

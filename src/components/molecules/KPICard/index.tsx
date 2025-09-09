@@ -1,4 +1,5 @@
 import { Card, Typography } from "antd";
+import type React from "react";
 
 type Props = {
   title: string;

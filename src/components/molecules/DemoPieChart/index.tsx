@@ -1,4 +1,5 @@
 import { Pie, type PieConfig } from "@ant-design/charts";
+import type React from "react";
 
 const data = [
   { category: "Pizza", count: 20 },
@@ -7,7 +8,7 @@ const data = [
   { category: "Dessert", count: 15 },
   { category: "Drinks", count: 8 },
 ];
-const DemoPieChart = () => {
+const DemoPieChart: React.FC = () => {
   const config: PieConfig = {
     data,
     angleField: "count",

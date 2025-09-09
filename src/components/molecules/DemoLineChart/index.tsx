@@ -1,4 +1,5 @@
 import { Line, type LineConfig } from "@ant-design/charts";
+import type React from "react";
 
 const data = [
   { year: "2015", sales: 3 },
@@ -11,7 +12,7 @@ const data = [
   { year: "2022", sales: 9 },
   { year: "2023", sales: 13 },
 ];
-const DemoLineChart = () => {
+const DemoLineChart: React.FC = () => {
   const config: LineConfig = {
     data,
     shapeField: "smooth",
