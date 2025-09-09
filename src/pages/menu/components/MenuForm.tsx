@@ -1,8 +1,10 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Form, Input, InputNumber, Select, Switch, Upload } from "antd";
+import { Form, Input, Select, Switch, Upload } from "antd";
 import type { UploadChangeParam, UploadFile } from "antd/es/upload";
 import { Fragment } from "react/jsx-runtime";
+import InputNumberCurrency from "src/components/molecules/InputNumberWithCurrency";
 import { useAppSelector } from "src/store";
+import type { MenuPayload } from "src/store/menu/menu.type";
 
 const { TextArea } = Input;
 
@@ -25,9 +27,9 @@ const MenuForm = () => {
       <Form.Item label="Description" name="description">
         <TextArea rows={4} />
       </Form.Item>
-      <Form.Item label="Price" name="price" rules={[{ required: true, message: "Please input price!" }]}>
-        <InputNumber min={0} style={{ width: "100%" }} />
-      </Form.Item>
+
+      <InputNumberCurrency<MenuPayload> />
+
       <Form.Item label="Category" name="category">
         <Select mode="multiple" allowClear optionFilterProp="name">
           {categories.map((category) => (

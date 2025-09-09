@@ -1,6 +1,7 @@
 import { App, Button, Card, Flex, Form } from "antd";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { DEFAULT_CURRENCY } from "src/components/molecules/InputNumberWithCurrency";
 import { useAppDispatch } from "src/store";
 import { menuApi } from "src/store/menu/menu.api";
 import { addMenuItem } from "src/store/menu/menu.slice";
@@ -14,6 +15,7 @@ const MenuAdd = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { message } = App.useApp();
+  const [form] = Form.useForm<MenuPayload>();
 
   const [addMenuMutate, { isLoading: isMenuMutating }] = menuApi.useAddMenuItemMutation();
   const { categories, isPendingCategories } = useCategories();
@@ -34,11 +36,6 @@ const MenuAdd = () => {
 
       const response = await addMenuMutate({
         ...menuPayload,
-        currencyOption: {
-          locales: "en-US",
-          style: "currency",
-          currency: "USD",
-        },
         category: categoriesValues,
         ingredients: ingredientsValues,
       });
@@ -66,6 +63,7 @@ const MenuAdd = () => {
       <Card title={<Header headerType="add" moduleName="menu" moduleRouteKey="menu" title="Menu Feature" />}>
         <Flex gap={16} wrap style={{ paddingInline: 8, paddingBlock: 16 }}>
           <Form
+            form={form}
             name="menu_add"
             scrollToFirstError
             variant="outlined"
@@ -73,6 +71,10 @@ const MenuAdd = () => {
             style={{ width: "100%" }}
             onFinish={onFinishHandler}
             disabled={isLoading}
+            initialValues={{
+              price: 0,
+              currency: DEFAULT_CURRENCY,
+            }}
           >
             <MenuForm />
             <Button type="primary" htmlType="submit" style={{ width: "fit-content" }} loading={isLoading}>

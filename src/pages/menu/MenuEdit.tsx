@@ -1,6 +1,7 @@
 import { App, Button, Card, Flex, Form } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { DEFAULT_CURRENCY } from "src/components/molecules/InputNumberWithCurrency";
 import { useAppDispatch } from "src/store";
 import { menuApi } from "src/store/menu/menu.api";
 import { updateMenuItem } from "src/store/menu/menu.slice";
@@ -101,11 +102,6 @@ const MenuEdit = () => {
         ...menuPayload,
         category: categoriesValues,
         ingredients: ingredientsValues,
-        currencyOption: {
-          locales: "en-US",
-          style: "currency",
-          currency: "USD",
-        },
       });
 
       if (response.error) {
@@ -152,6 +148,10 @@ const MenuEdit = () => {
             style={{ width: "100%" }}
             onFinish={onFinishHandler}
             disabled={isLoading}
+            initialValues={{
+              price: 0,
+              currency: DEFAULT_CURRENCY,
+            }}
           >
             <MenuForm />
             <Button type="primary" htmlType="submit" style={{ width: "fit-content" }} loading={isLoading}>
