@@ -5,7 +5,7 @@ import { SuspenseErrorBoundary } from "./SuspenseErrorBoundary";
 import ProtectedRoutes from "./ProtectedRoutes";
 
 //lazy imports
-const Dashboard = lazy(() => import("../pages/index"));
+const Dashboard = lazy(() => import("../pages/dashboard/index"));
 const LayoutAuth = lazy(() => import("../components/organism/layoutAuth/LayoutAuth"));
 const Login = lazy(() => import("../pages/login/Login"));
 const Register = lazy(() => import("../pages/register/Register"));
