@@ -1,15 +1,18 @@
 import type { TableColumnsType } from "antd";
-import { Space, Table, Tag, Typography } from "antd";
+import { App, Space, Table, Tag, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DeleteButton from "src/components/molecules/deleteButton";
 import EditButton from "src/components/molecules/editButton";
 import { currencyFormatter } from "src/components/molecules/InputNumberWithCurrency/util";
+import useCategories from "src/pages/menu/hooks/useCategories";
+import useIngredients from "src/pages/menu/hooks/useIngredients";
+import useMenus from "src/pages/menu/hooks/useMenus";
+import { addDynamicFiltersForColumnsByColumnKey } from "src/pages/menu/lib/helper";
 import { useAppDispatch } from "src/store";
 import type { Category } from "src/store/category/category.type";
 import type { Ingredient } from "src/store/ingredient/ingredient.type";
 import { menuApi } from "src/store/menu/menu.api";
-import { setMenus } from "src/store/menu/menu.slice";
 import type { Menu } from "src/store/menu/menu.type";
 
 const { Text } = Typography;
@@ -62,6 +65,11 @@ const defaultColumns = (handleDelete: (id: string) => void): TableColumnsType<Da
     title: "Category",
     key: "category",
     dataIndex: "category",
+    filters: [],
+    filterMode: "tree",
+    filterSearch: true,
+    onFilter: (value, record) =>
+      record.category.some((categoryItem: Category) => categoryItem.name.includes(value as string)),
     render: (_, { category }) => (
       <>
         {category.map((categoryItem: Category) => {
@@ -77,7 +85,12 @@ const defaultColumns = (handleDelete: (id: string) => void): TableColumnsType<Da
   {
     title: "Ingredient",
     key: "ingredient",
-    dataIndex: "ingredient",
+    dataIndex: "ingredients",
+    filters: [],
+    filterMode: "tree",
+    filterSearch: true,
+    onFilter: (value, record) =>
+      record.ingredients.some((ingredientItem: Ingredient) => ingredientItem.name.includes(value as string)),
     render: (_, { ingredients }) => (
       <>
         {ingredients.map((ingredientItem: Ingredient) => {
@@ -88,6 +101,15 @@ const defaultColumns = (handleDelete: (id: string) => void): TableColumnsType<Da
           );
         })}
       </>
+    ),
+  },
+  // add one more column for available or not menu item
+  {
+    title: "Available",
+    key: "isAvailable",
+    dataIndex: "isAvailable",
+    render: (isAvailable) => (
+      <Tag color={isAvailable ? "green" : "red"}>{isAvailable ? "Available" : "Unavailable"}</Tag>
     ),
   },
   {
@@ -105,51 +127,57 @@ const defaultColumns = (handleDelete: (id: string) => void): TableColumnsType<Da
 
 const MenuDataTable = () => {
   const dispatch = useAppDispatch();
+  const { message } = App.useApp();
 
-  const { data: fetchedMenus, isLoading: isFetchingMenusPending } = menuApi.useGetMenuItemsQuery();
+  const { menus, isPendingMenus } = useMenus();
+  const { categories, isPendingCategories } = useCategories();
+  const { ingredients, isPendingIngredients } = useIngredients();
   const [handleDelete, { isLoading: isDeletingMenuPending }] = menuApi.useDeleteMenuItemMutation();
 
   const handleDeleteMenu = async (id: string) => {
-    await handleDelete(id);
-    dispatch(menuApi.util.resetApiState());
+    try {
+      await handleDelete(id);
+      message.success("Menu item deleted successfully");
+      dispatch(menuApi.util.resetApiState());
+    } catch (err) {
+      console.error(`Error deleting menu item with ID ${id}:`, err);
+      message.error("Something went wrong while deleting the menu item");
+    }
   };
 
   const [columns, setColumns] = useState<TableColumnsType<DataType>>(defaultColumns(handleDeleteMenu));
 
   // effect to add dynamic data values inside name filter
   useEffect(() => {
-    if (!fetchedMenus) {
+    if (isPendingMenus || isPendingCategories || isPendingIngredients) {
       return;
     }
 
-    dispatch(setMenus(fetchedMenus));
-
     // Fetch data or perform side effects here
     setColumns((prev) => {
-      if (!fetchedMenus.length) {
-        return prev;
-      }
-
-      const nameFilter = fetchedMenus.map((item) => ({
-        text: item.name,
-        value: item.name,
-      }));
-      const nameColumn = prev.find((col) => col.key === "name");
-      if (nameColumn) {
-        return prev.map((col) => (col.key === "name" ? { ...col, filters: nameFilter } : col));
-      }
-
-      return prev;
+      let currentColumns = prev;
+      currentColumns = addDynamicFiltersForColumnsByColumnKey<DataType, Menu>(currentColumns, "name", menus);
+      currentColumns = addDynamicFiltersForColumnsByColumnKey<DataType, Category>(
+        currentColumns,
+        "category",
+        categories,
+      );
+      currentColumns = addDynamicFiltersForColumnsByColumnKey<DataType, Ingredient>(
+        currentColumns,
+        "ingredient",
+        ingredients,
+      );
+      return currentColumns;
     });
-  }, [dispatch, fetchedMenus, isFetchingMenusPending]);
+  }, [dispatch, menus, isPendingMenus, categories, isPendingCategories, isPendingIngredients, ingredients]);
 
   return (
     <Table<DataType>
       columns={columns}
-      dataSource={fetchedMenus}
+      dataSource={menus}
       bordered
       rowKey="id"
-      loading={isDeletingMenuPending || isFetchingMenusPending}
+      loading={isDeletingMenuPending || isPendingMenus}
     />
   );
 };
