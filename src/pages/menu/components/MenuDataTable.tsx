@@ -103,11 +103,15 @@ const defaultColumns = (handleDelete: (id: string) => void): TableColumnsType<Da
       </>
     ),
   },
-  // add one more column for available or not menu item
   {
     title: "Available",
     key: "isAvailable",
     dataIndex: "isAvailable",
+    filters: [
+      { text: "Available", value: true },
+      { text: "Unavailable", value: false },
+    ],
+    onFilter: (value, record) => record.isAvailable === value,
     render: (isAvailable) => (
       <Tag color={isAvailable ? "green" : "red"}>{isAvailable ? "Available" : "Unavailable"}</Tag>
     ),
