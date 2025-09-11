@@ -1,5 +1,5 @@
 import type { TableColumnsType } from "antd";
-import { App, Space, Table, Tag, Typography } from "antd";
+import { App, Image, Space, Table, Tag, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DeleteButton from "src/components/molecules/deleteButton";
@@ -25,6 +25,20 @@ const defaultColumns = (handleDelete: (id: string) => void): TableColumnsType<Da
     dataIndex: "id",
     key: "id",
     render: (text) => <Link to={`/menu/${text}/edit`}>{text}</Link>,
+  },
+  // add single image thumbnail column
+  {
+    title: "Image",
+    dataIndex: "images",
+    key: "image",
+    render: (imageValues) => {
+      if (!imageValues?.length) return null;
+      imageValues = Array.isArray(imageValues) ? imageValues : [imageValues];
+      const image = imageValues[0];
+      return (
+        <Image src={image?.url} alt={image?.name ?? "Menu Item"} style={{ width: 100, height: 100, borderRadius: 4 }} />
+      );
+    },
   },
   {
     title: "Name",
