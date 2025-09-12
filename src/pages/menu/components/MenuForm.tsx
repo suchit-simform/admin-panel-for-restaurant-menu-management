@@ -1,21 +1,18 @@
-import { PlusOutlined } from "@ant-design/icons";
-import { Form, Input, Select, Switch, Upload } from "antd";
-import type { UploadChangeParam, UploadFile } from "antd/es/upload";
+import { Form, Input, Select, Switch } from "antd";
 import { Fragment } from "react/jsx-runtime";
+import ImageUploadFormItem from "src/components/atoms/ImageUpload";
 import InputNumberCurrency from "src/components/molecules/InputNumberWithCurrency";
 import { useAppSelector } from "src/store";
 import type { MenuPayload } from "src/store/menu/menu.type";
 
 const { TextArea } = Input;
 
-const normFile = (e: UploadChangeParam | UploadFile[]) => {
-  if (Array.isArray(e)) {
-    return e;
-  }
-  return e && e.fileList ? e.fileList : [];
+type Props = {
+  isEdit?: boolean;
+  handlePreviewCallback: (args: { previewImage: string; previewTitle: string; previewOpen: boolean }) => void;
 };
 
-const MenuForm = () => {
+const MenuForm: React.FC<Props> = ({ handlePreviewCallback, isEdit }) => {
   const categories = useAppSelector((state) => state.category.items);
   const ingredients = useAppSelector((state) => state.ingredient.items);
 
@@ -48,14 +45,7 @@ const MenuForm = () => {
           ))}
         </Select>
       </Form.Item>
-      <Form.Item label="Upload" name="upload" valuePropName="fileList" getValueFromEvent={normFile}>
-        <Upload action="/upload.do" listType="picture-card">
-          <button style={{ color: "inherit", cursor: "inherit", border: 0, background: "none" }} type="button">
-            <PlusOutlined />
-            <div style={{ marginTop: 8 }}>Upload</div>
-          </button>
-        </Upload>
-      </Form.Item>
+      <ImageUploadFormItem handlePreviewCallback={handlePreviewCallback} isEdit={isEdit} />
       <Form.Item label="Available" valuePropName="checked" name="isAvailable">
         <Switch />
       </Form.Item>

@@ -6,7 +6,10 @@ export type AuthState = {
   currentUser?: User | null;
 };
 
-const initialState: AuthState = {};
+const initialState: AuthState = {
+  authToken: import.meta.env.MODE !== "production" ? import.meta.env.VITE_APP_USER_TOKEN || null : null,
+  currentUser: import.meta.env.MODE !== "production" ? JSON.parse(import.meta.env.VITE_APP_AUTH_DETAIL || "{}") : null,
+};
 
 export const authSlice = createSlice({
   name: "auth",
