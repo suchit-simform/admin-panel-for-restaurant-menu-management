@@ -45,7 +45,7 @@ const ImageUploadFormItem: React.FC<Props> = ({ handlePreviewCallback, isEdit })
     const { file, onProgress, onError, onSuccess } = options;
 
     try {
-      const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+      const url = `${import.meta.env.VITE_APP_CLOUDINARY_BASE_URL || ""}/${CLOUD_NAME}/image/upload`;
       const formData = new FormData();
       formData.append("file", file);
       formData.append("upload_preset", UPLOAD_PRESET);
