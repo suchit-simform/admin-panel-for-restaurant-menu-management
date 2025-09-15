@@ -1,4 +1,5 @@
 import React, { type ReactNode } from "react";
+import Loading from "src/components/atoms/Loading/loading";
 
 type ErrorBoundaryProps = {
   children: ReactNode;
@@ -10,7 +11,7 @@ type ErrorBoundaryState = {
 
 //replace it with your own custom loader
 const Loader = () => {
-  return <div>Loading...</div>;
+  return <Loading />;
 };
 
 //replace it with your own custom error page
