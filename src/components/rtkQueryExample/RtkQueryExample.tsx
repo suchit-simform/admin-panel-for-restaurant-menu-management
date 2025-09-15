@@ -1,10 +1,11 @@
 import React from "react";
+import Loading from "src/components/atoms/Loading/loading";
 import { userApi } from "src/store/api/userApi";
 
 const RtkQueryExample = () => {
   const { data, isLoading } = userApi.useGetUsersQuery();
 
-  if (isLoading) return <div>Loading.....</div>;
+  if (isLoading) return <Loading />;
 
   return (
     <div>
