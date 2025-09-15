@@ -3,8 +3,8 @@ import "./loading.style.css";
 
 const Loading = () => {
   return (
-    <div className="loading">
-      <Spin aria-label="Loading" />
+    <div className="loading" aria-label="Loading">
+      <Spin />
     </div>
   );
 };
