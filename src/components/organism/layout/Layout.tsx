@@ -90,13 +90,17 @@ const BaseLayout: React.FC<Props> = ({ children, isViewOnly = true }) => {
         <Flex align="center" justify="center" className={styles.sider_logo}>
           <img src="https://ik.imagekit.io/ashishkk22/simform_logo.svg?updatedAt=1697020836220" alt="simform_logo" />
         </Flex>
-        <Menu mode="inline" theme="dark" items={items} className={styles.menu} selectedKeys={selectedMenuKey} />
-        <Menu
-          mode="inline"
-          theme="dark"
-          items={mobileUserMenuItems(currentUser, logoutHandler)}
-          className={styles.mobileSubMenu}
-        />
+        {!isViewOnly && (
+          <>
+            <Menu mode="inline" theme="dark" items={items} className={styles.menu} selectedKeys={selectedMenuKey} />
+            <Menu
+              mode="inline"
+              theme="dark"
+              items={mobileUserMenuItems(currentUser, logoutHandler)}
+              className={styles.mobileSubMenu}
+            />
+          </>
+        )}
       </Sider>
       <Layout className={styles.layoutSub}>
         <Header className={styles.header}>
