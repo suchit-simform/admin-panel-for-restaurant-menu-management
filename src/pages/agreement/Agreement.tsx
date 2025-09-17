@@ -1,6 +1,7 @@
 import { Button, Card, Typography } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import styles from "./agreement-page.module.css";
 
 const { Paragraph } = Typography;
 const { Meta } = Card;
@@ -11,16 +12,7 @@ const AgreementPage: React.FC = () => {
     <Card>
       <Meta title="User Agreement" description="Please read below agreement before proceeding." />
 
-      <div
-        style={{
-          border: "1px solid #e0e0e0",
-          borderRadius: "8px",
-          marginBlock: "16px",
-          padding: "16px",
-          marginBottom: "16px",
-          background: "#fafafa",
-        }}
-      >
+      <div className={styles.agreementCardContent}>
         <Typography>
           <Paragraph>Welcome to our application. By using our services, you agree to the following terms:</Paragraph>
           <Paragraph>1. You will not misuse our platform for unlawful activities.</Paragraph>
