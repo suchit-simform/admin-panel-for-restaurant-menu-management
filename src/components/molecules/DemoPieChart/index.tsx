@@ -1,4 +1,4 @@
-import { Pie, type PieConfig } from "@ant-design/charts";
+import { Pie, type PieConfig } from "@ant-design/plots";
 import type React from "react";
 
 const data = [
@@ -8,6 +8,7 @@ const data = [
   { category: "Dessert", count: 15 },
   { category: "Drinks", count: 8 },
 ];
+
 const DemoPieChart: React.FC = () => {
   const config: PieConfig = {
     data,
@@ -16,14 +17,17 @@ const DemoPieChart: React.FC = () => {
     radius: 0.9,
     height: 400,
     label: {
-      type: "inner",
-      offset: "-30%",
-      content: "{value}",
-      style: { fontSize: 14, textAlign: "center" },
+      text: "category",
+      style: {
+        fontWeight: "bold",
+      },
     },
-    interactions: [{ type: "element-active" }],
     legend: {
-      position: "bottom",
+      color: {
+        title: false,
+        position: "right",
+        rowPadding: 5,
+      },
     },
   };
 
