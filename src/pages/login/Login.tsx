@@ -1,11 +1,11 @@
 import { Button, Checkbox, Flex, Form, Input, Select, type FormProps } from "antd";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { generateAuthToken } from "src/lib/utils";
+import { useAbilityContext } from "src/lib/ability/ability.context";
+import { handleMockUserAuthentication } from "src/lib/helpers/auth.helpers";
 import { useAppDispatch } from "src/store";
 import { handleLogin } from "src/store/features/authSlice";
 import type { Role } from "src/types/common";
-import { v4 as uuid } from "uuid";
 import { handleLogout } from "../../store/features/authSlice";
 
 const { Option } = Select;
@@ -20,19 +20,19 @@ const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const { setAbility } = useAbilityContext();
+
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     try {
-      const authToken = generateAuthToken();
+      // handle login logic here, e.g., call an API to verify credentials
+      const { authToken, currentUser, currentUserAbility } = handleMockUserAuthentication(values);
       dispatch(
         handleLogin({
           authToken,
-          currentUser: {
-            email: values.email,
-            role: values.role,
-            id: uuid(),
-          },
+          currentUser,
         }),
       );
+      setAbility(currentUserAbility);
       navigate("/", { replace: true });
     } catch (err) {
       console.error(err);

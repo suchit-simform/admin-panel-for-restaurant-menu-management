@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import DeleteButton from "src/components/molecules/deleteButton";
 import EditButton from "src/components/molecules/editButton";
 import { currencyFormatter } from "src/components/molecules/InputNumberWithCurrency/util";
+import Can from "src/lib/ability/ability.component";
 import useCategories from "src/pages/menu/hooks/useCategories";
 import useIngredients from "src/pages/menu/hooks/useIngredients";
 import useMenus from "src/pages/menu/hooks/useMenus";
@@ -136,8 +137,12 @@ const defaultColumns = (handleDelete: (id: string) => void): TableColumnsType<Da
     fixed: "right",
     render: (_, record) => (
       <Space size="middle">
-        <EditButton routeTo={`/menu/${record.id}/edit`} />
-        <DeleteButton onConfirm={() => handleDelete(record.id)} />
+        <Can I="update" a="menu">
+          <EditButton routeTo={`/menu/${record.id}/edit`} />
+        </Can>
+        <Can I="delete" a="menu">
+          <DeleteButton onConfirm={() => handleDelete(record.id)} />
+        </Can>
       </Space>
     ),
   },
