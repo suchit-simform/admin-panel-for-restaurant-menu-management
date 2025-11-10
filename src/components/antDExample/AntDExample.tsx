@@ -1,6 +1,6 @@
-import React, { useState } from "react";
 import { Button, Radio, Slider, Space } from "antd";
 import type { SizeType } from "antd/es/config-provider/SizeContext";
+import { useState } from "react";
 
 const Buttons = () => {
   const [size, setSize] = useState<SizeType | [SizeType, SizeType] | "customize">("small");

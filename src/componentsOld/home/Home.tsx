@@ -1,6 +1,6 @@
-import RtkQueryExample from "src/components/rtkQueryExample/RtkQueryExample";
+import { type ReactNode, useState } from "react";
 import AntDExample from "src/components/antDExample/AntDExample";
-import { useState, ReactNode } from "react";
+import RtkQueryExample from "src/components/rtkQueryExample/RtkQueryExample";
 import styles from "./Home.module.css";
 
 type ExampleComponent = {

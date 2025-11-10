@@ -1,4 +1,3 @@
-import React from "react";
 import Loading from "src/components/atoms/Loading/loading";
 import { userApi } from "src/store/api/userApi";
 
