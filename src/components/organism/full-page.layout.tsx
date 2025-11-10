@@ -1,7 +1,7 @@
 import { Flex } from "antd";
 import { Outlet } from "react-router-dom";
 
-const LayoutAuth = () => {
+const FullPageLayout = () => {
   return (
     <Flex align="center" justify="center" style={{ minHeight: "100vh", padding: "1rem" }}>
       <Outlet />
@@ -9,4 +9,4 @@ const LayoutAuth = () => {
   );
 };
 
-export default LayoutAuth;
+export default FullPageLayout;

@@ -6,7 +6,7 @@ import ProtectedRoutes from "./ProtectedRoutes";
 
 //lazy imports
 const PrivateRoutes = lazy(() => import("./PrivateRouter"));
-const LayoutAuth = lazy(() => import("../components/organism/layoutAuth/LayoutAuth"));
+const FullPageLayout = lazy(() => import("../components/organism/full-page.layout"));
 const Agreement = lazy(() => import("../pages/agreement/Agreement"));
 
 const Login = lazy(() => import("../pages/login/Login"));
@@ -71,7 +71,7 @@ const router = createBrowserRouter(
             path=":menuId/edit"
             element={
               <SuspenseErrorBoundary>
-                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                <ProtectedRoutes allowedRoles={["admin"]}>
                   <MenuEdit />
                 </ProtectedRoutes>
               </SuspenseErrorBoundary>
@@ -103,7 +103,7 @@ const router = createBrowserRouter(
             path=":categoryId/edit"
             element={
               <SuspenseErrorBoundary>
-                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                <ProtectedRoutes allowedRoles={["admin"]}>
                   <CategoryEdit />
                 </ProtectedRoutes>
               </SuspenseErrorBoundary>
@@ -135,7 +135,7 @@ const router = createBrowserRouter(
             path=":ingredientId/edit"
             element={
               <SuspenseErrorBoundary>
-                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                <ProtectedRoutes allowedRoles={["admin"]}>
                   <IngredientEdit />
                 </ProtectedRoutes>
               </SuspenseErrorBoundary>
@@ -157,7 +157,7 @@ const router = createBrowserRouter(
         path="auth/*"
         element={
           <SuspenseErrorBoundary>
-            <LayoutAuth />
+            <FullPageLayout />
           </SuspenseErrorBoundary>
         }
       >
