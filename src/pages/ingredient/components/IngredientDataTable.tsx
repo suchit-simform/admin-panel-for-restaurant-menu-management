@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DeleteButton from "src/components/molecules/deleteButton";
 import EditButton from "src/components/molecules/editButton";
+import Can from "src/lib/ability/ability.component";
 import { useAppDispatch } from "src/store";
 import { ingredientApi } from "src/store/ingredient/ingredient.api";
 import { setIngredients } from "src/store/ingredient/ingredient.slice";
@@ -33,8 +34,12 @@ const defaultColumns = (handleDelete: (id: string) => void): TableColumnsType<Da
     fixed: "right",
     render: (_, record) => (
       <Space size="middle">
-        <EditButton routeTo={`/ingredient/${record.id}/edit`} />
-        <DeleteButton onConfirm={() => handleDelete(record.id)} />
+        <Can I="update" a="ingredient">
+          <EditButton routeTo={`/ingredient/${record.id}/edit`} />
+        </Can>
+        <Can I="delete" a="ingredient">
+          <DeleteButton onConfirm={() => handleDelete(record.id)} />
+        </Can>
       </Space>
     ),
   },

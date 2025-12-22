@@ -1,4 +1,4 @@
-import { Line, type LineConfig } from "@ant-design/charts";
+import { Line, type LineConfig } from "@ant-design/plots";
 import type React from "react";
 
 const data = [
@@ -15,13 +15,17 @@ const data = [
 const DemoLineChart: React.FC = () => {
   const config: LineConfig = {
     data,
-    shapeField: "smooth",
-    height: 400,
     xField: "year",
     yField: "sales",
-    cartesian: { yAxis: { nice: true }, xAxis: { nice: true } },
-    tooltip: { showCrosshairs: true, shared: true },
-    point: { size: 5 },
+    point: {
+      shapeField: "square",
+      sizeField: 4,
+    },
+    interaction: {
+      tooltip: {
+        marker: false,
+      },
+    },
     style: {
       lineWidth: 2,
     },

@@ -1,12 +1,12 @@
 import { lazy } from "react";
 import { createBrowserRouter, createRoutesFromElements, Outlet, Route } from "react-router-dom";
 import BaseLayout from "src/components/organism/layout/Layout";
+import Can from "src/lib/ability/ability.component";
 import { SuspenseErrorBoundary } from "./SuspenseErrorBoundary";
-import ProtectedRoutes from "./ProtectedRoutes";
 
 //lazy imports
 const PrivateRoutes = lazy(() => import("./PrivateRouter"));
-const LayoutAuth = lazy(() => import("../components/organism/layoutAuth/LayoutAuth"));
+const FullPageLayout = lazy(() => import("../components/organism/full-page.layout"));
 const Agreement = lazy(() => import("../pages/agreement/Agreement"));
 
 const Login = lazy(() => import("../pages/login/Login"));
@@ -51,9 +51,9 @@ const router = createBrowserRouter(
             index
             element={
               <SuspenseErrorBoundary>
-                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                <Can I="read" a="menu">
                   <Menu />
-                </ProtectedRoutes>
+                </Can>
               </SuspenseErrorBoundary>
             }
           />
@@ -61,9 +61,9 @@ const router = createBrowserRouter(
             path="add"
             element={
               <SuspenseErrorBoundary>
-                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                <Can I="create" a="menu">
                   <MenuAdd />
-                </ProtectedRoutes>
+                </Can>
               </SuspenseErrorBoundary>
             }
           />
@@ -71,9 +71,9 @@ const router = createBrowserRouter(
             path=":menuId/edit"
             element={
               <SuspenseErrorBoundary>
-                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                <Can I="update" a="menu">
                   <MenuEdit />
-                </ProtectedRoutes>
+                </Can>
               </SuspenseErrorBoundary>
             }
           />
@@ -83,9 +83,9 @@ const router = createBrowserRouter(
             index
             element={
               <SuspenseErrorBoundary>
-                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                <Can I="read" a="category">
                   <Category />
-                </ProtectedRoutes>
+                </Can>
               </SuspenseErrorBoundary>
             }
           />
@@ -93,9 +93,9 @@ const router = createBrowserRouter(
             path="add"
             element={
               <SuspenseErrorBoundary>
-                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                <Can I="create" a="category">
                   <CategoryAdd />
-                </ProtectedRoutes>
+                </Can>
               </SuspenseErrorBoundary>
             }
           />
@@ -103,9 +103,9 @@ const router = createBrowserRouter(
             path=":categoryId/edit"
             element={
               <SuspenseErrorBoundary>
-                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                <Can I="update" a="category">
                   <CategoryEdit />
-                </ProtectedRoutes>
+                </Can>
               </SuspenseErrorBoundary>
             }
           />
@@ -115,9 +115,9 @@ const router = createBrowserRouter(
             index
             element={
               <SuspenseErrorBoundary>
-                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                <Can I="read" a="ingredient">
                   <Ingredient />
-                </ProtectedRoutes>
+                </Can>
               </SuspenseErrorBoundary>
             }
           />
@@ -125,9 +125,9 @@ const router = createBrowserRouter(
             path="add"
             element={
               <SuspenseErrorBoundary>
-                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                <Can I="create" a="ingredient">
                   <IngredientAdd />
-                </ProtectedRoutes>
+                </Can>
               </SuspenseErrorBoundary>
             }
           />
@@ -135,9 +135,9 @@ const router = createBrowserRouter(
             path=":ingredientId/edit"
             element={
               <SuspenseErrorBoundary>
-                <ProtectedRoutes allowedRoles={["admin", "user"]}>
+                <Can I="update" a="ingredient">
                   <IngredientEdit />
-                </ProtectedRoutes>
+                </Can>
               </SuspenseErrorBoundary>
             }
           />
@@ -157,7 +157,7 @@ const router = createBrowserRouter(
         path="auth/*"
         element={
           <SuspenseErrorBoundary>
-            <LayoutAuth />
+            <FullPageLayout />
           </SuspenseErrorBoundary>
         }
       >

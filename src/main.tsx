@@ -1,18 +1,20 @@
-import { Provider } from "react-redux";
-import { store } from "src/store";
 import { ConfigProvider } from "antd";
-import theme from "src/theme/themeAntd";
-
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
+import { Provider } from "react-redux";
+import { AbilityProvider } from "src/lib/ability/ability.context.tsx";
+import { store } from "src/store";
+import theme from "src/theme/themeAntd";
 import App from "./App.tsx";
+import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
       <ConfigProvider theme={theme}>
-        <App />
+        <AbilityProvider>
+          <App />
+        </AbilityProvider>
       </ConfigProvider>
     </Provider>
   </StrictMode>,
