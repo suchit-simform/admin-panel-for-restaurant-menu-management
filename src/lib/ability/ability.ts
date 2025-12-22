@@ -10,6 +10,8 @@ function defineAbilityForUser(abilityBuilder: AbilityBuilder<AppAbility>) {
   can(AppActions.READ, AppSubjects.DASHBOARD);
 
   can(AppActions.MANAGE, AppSubjects.MENU);
+  cannot(AppActions.CREATE, AppSubjects.MENU, ["isAvailable"]);
+  cannot(AppActions.UPDATE, AppSubjects.MENU, ["isAvailable"]);
   cannot(AppActions.DELETE, AppSubjects.MENU);
 
   can(AppActions.MANAGE, AppSubjects.CATEGORY);

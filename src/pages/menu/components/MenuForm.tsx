@@ -1,7 +1,10 @@
+import { permittedFieldsOf } from "@casl/ability/extra";
 import { Form, Input, Select, Switch } from "antd";
 import { Fragment } from "react/jsx-runtime";
 import ImageUploadFormItem from "src/components/atoms/ImageUpload";
 import InputNumberCurrency from "src/components/molecules/InputNumberWithCurrency";
+import { AppActions, AppSubjects } from "src/lib/ability/ability.config";
+import { useAbilityContext } from "src/lib/ability/ability.context";
 import { useAppSelector } from "src/store";
 import type { MenuPayload } from "src/store/menu/menu.type";
 
@@ -12,7 +15,15 @@ type Props = {
   handlePreviewCallback: (args: { previewImage: string; previewTitle: string; previewOpen: boolean }) => void;
 };
 
+const MENU_FIELDS = ["name", "description", "price", "category", "ingredients", "image", "isAvailable"];
+
 const MenuForm: React.FC<Props> = ({ handlePreviewCallback, isEdit }) => {
+  const { ability } = useAbilityContext();
+
+  const updatableFields = permittedFieldsOf(ability, isEdit ? AppActions.UPDATE : AppActions.CREATE, AppSubjects.MENU, {
+    fieldsFrom: (rule) => rule.fields || MENU_FIELDS,
+  });
+
   const categories = useAppSelector((state) => state.category.items);
   const ingredients = useAppSelector((state) => state.ingredient.items);
 
@@ -46,9 +57,11 @@ const MenuForm: React.FC<Props> = ({ handlePreviewCallback, isEdit }) => {
         </Select>
       </Form.Item>
       <ImageUploadFormItem handlePreviewCallback={handlePreviewCallback} isEdit={isEdit} />
-      <Form.Item label="Available" valuePropName="checked" name="isAvailable">
-        <Switch />
-      </Form.Item>
+      {updatableFields.includes("isAvailable") && (
+        <Form.Item label="Available" valuePropName="checked" name="isAvailable">
+          <Switch />
+        </Form.Item>
+      )}
     </Fragment>
   );
 };
