@@ -1,5 +1,6 @@
 import { Button } from "antd";
 import { useEffect } from "react";
+import styles from "./ability-devtool.module.css";
 import { defineAbilityFor } from "src/lib/ability/ability";
 import { useAbilityContext } from "src/lib/ability/ability.context";
 import { useAppDispatch, useAppSelector } from "src/store";
@@ -13,7 +14,7 @@ const AbilityDevtoolComponent = () => {
 
   // in dev mode add a logic which login user automatically for that ability was not present
   useEffect(() => {
-    if (import.meta.env.DEV) {
+    if (!import.meta.env.DEV) {
       return;
     }
 
@@ -28,7 +29,7 @@ const AbilityDevtoolComponent = () => {
     setAbility(defineAbilityFor(currentUser));
   };
   const handleChangeToUserRole = () => {
-    const currentUser: User = {
+    const mockAdminForRole: User = {
       id: "dev-user-id",
       role: "user",
       email: "user@example.com",
@@ -36,10 +37,10 @@ const AbilityDevtoolComponent = () => {
     dispatch(
       handleLogin({
         authToken,
-        currentUser,
+        currentUser: mockAdminForRole,
       }),
     );
-    setAbility(defineAbilityFor(currentUser));
+    setAbility(defineAbilityFor(mockAdminForRole));
   };
   const handleChangeToAdminRole = () => {
     const currentUser: User = {
@@ -60,20 +61,7 @@ const AbilityDevtoolComponent = () => {
     return null;
   }
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: 16,
-        right: 16,
-        zIndex: 1000,
-        padding: "1rem",
-        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-        borderRadius: 8,
-        display: "flex",
-        flexDirection: "column",
-        gap: "0.5rem",
-      }}
-    >
+    <div className={styles.container}>
       <Button onClick={handleUpdateOfAbility}>Update Ability</Button>
       <Button onClick={handleChangeToUserRole}>Change to user role</Button>
       <Button onClick={handleChangeToAdminRole}>Change to admin role</Button>

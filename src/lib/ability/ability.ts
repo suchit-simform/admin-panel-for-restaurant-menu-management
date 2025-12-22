@@ -9,18 +9,15 @@ function defineAbilityForUser(abilityBuilder: AbilityBuilder<AppAbility>) {
 
   can(AppActions.READ, AppSubjects.DASHBOARD);
 
-  can(AppActions.MANAGE, AppSubjects.MENU);
+  // Explicitly list allowed actions for MENU instead of broad MANAGE
+  can([AppActions.CREATE, AppActions.READ, AppActions.UPDATE], AppSubjects.MENU);
+  // Restrict access to specific fields on MENU
   cannot(AppActions.CREATE, AppSubjects.MENU, ["isAvailable"]);
   cannot(AppActions.UPDATE, AppSubjects.MENU, ["isAvailable"]);
-  cannot(AppActions.DELETE, AppSubjects.MENU);
-
-  can(AppActions.MANAGE, AppSubjects.CATEGORY);
-  cannot(AppActions.DELETE, AppSubjects.CATEGORY);
-
-  can(AppActions.MANAGE, AppSubjects.INGREDIENT);
-  cannot(AppActions.DELETE, AppSubjects.INGREDIENT);
-
-  cannot(AppActions.DELETE, AppSubjects.ALL);
+  // Explicitly list allowed actions for CATEGORY
+  can([AppActions.CREATE, AppActions.READ, AppActions.UPDATE], AppSubjects.CATEGORY);
+  // Explicitly list allowed actions for INGREDIENT
+  can([AppActions.CREATE, AppActions.READ, AppActions.UPDATE], AppSubjects.INGREDIENT);
 
   return build();
 }
